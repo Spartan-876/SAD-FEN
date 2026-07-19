@@ -1,0 +1,242 @@
+export const preguntas = [
+  {
+    id: "p1_zona",
+    numero: 1,
+    titulo: "Ubicación Geográfica Regional",
+    texto:
+      "¿En qué tipo de zona de la región Lambayeque se encuentra ubicada tu vivienda?",
+    opciones: {
+      A: "En plena ciudad o urbanización (Chiclayo Centro, José Leonardo Ortiz, La Victoria, Lambayeque, Ferreñafe urbano).",
+      B: "En un caserío, campo, zona de cultivo o cerca del mar (Íllimo, Pacora, Jayanca, Mórrope, Túcume, Pimentel, Santa Rosa).",
+    },
+    condicion: null,
+  },
+  {
+    id: "p2_muro",
+    numero: 2,
+    titulo: "Resistencia del Muro",
+    texto:
+      "¿De qué material son las paredes principales del primer piso de tu casa?",
+    opciones: {
+      A: "De material noble (ladrillo y cemento con columnas y vigas de concreto).",
+      B: "De adobe, quincha, madera, esteras o solo barro.",
+    },
+    condicion: null,
+  },
+  {
+    id: "p3_techo",
+    numero: 3,
+    titulo: "Geometría e Inclinación del Techo",
+    texto:
+      "¿Cómo está construido el techo principal de tu hogar?",
+    opciones: {
+      A: "Es de calaminas o planchas de eternit que tienen una caída (inclinación) visible para que corra el agua.",
+      B: "Es un techo plano de concreto (loza) o un techo rústico de caña con torta de barro sin caída.",
+    },
+    condicion: null,
+  },
+  {
+    id: "p4_agua",
+    numero: 4,
+    titulo: "Almacenamiento de Agua Potable",
+    texto:
+      "Si la red pública de agua se corta por varios días debido a las lluvias, ¿cómo aseguras el consumo en casa?",
+    opciones: {
+      A: "Tengo un tanque elevado (azul) en el techo o una cisterna subterránea hermética con bomba.",
+      B: "Junto el agua en baldes, bidones o cilindros (o no tengo capacidad de almacenamiento y compro para el día).",
+    },
+    condicion: null,
+  },
+  {
+    id: "p5_poblacion",
+    numero: 5,
+    titulo: "Composición de la Población en el Hogar",
+    texto:
+      "¿Viven en la casa bebés, niños muy pequeños, ancianos o personas con alguna discapacidad o enfermedad crónica?",
+    opciones: {
+      A: "Sí, reside al menos una persona que pertenece a este grupo y necesitará ayuda urgente para moverse.",
+      B: "No, todos los que vivimos en casa somos adultos o jóvenes con movilidad completa para evacuar rápido.",
+    },
+    condicion: null,
+  },
+  {
+    id: "p6_techo_protegido",
+    numero: 6,
+    titulo: "Nivel de Protección del Techo Existente",
+    texto:
+      "Si ya le pusiste plástico o mantas impermeables a tu techo por la alerta de lluvias, ¿cómo los has asegurado?",
+    opciones: {
+      A: "He armado una estructura inclinada con palos/madera, estiré bien el plástico y lo clavé o amarré firmemente.",
+      B: "Lo coloqué plano sobre el techo y le metí ladrillos, piedras o llantas sueltas (o todavía no he puesto ningún plástico).",
+    },
+    condicion: null,
+  },
+  {
+    id: "p7_valvula",
+    numero: 7,
+    titulo: "Retorno de Red Sanitaria",
+    texto:
+      "¿Tu casa cuenta con una válvula check (antirretorno) instalada en la caja de desagüe de la vereda para evitar que las aguas servidas de la calle se regresen a tus baños?",
+    opciones: {
+      A: "Sí, está instalada y operativa.",
+      B: "No tengo esa válvula (el tubo va directo a la calle o uso sacos en la puerta).",
+    },
+    condicion: "urbano",
+  },
+  {
+    id: "p8_electrica",
+    numero: 8,
+    titulo: "Altura de la Red Eléctrica Domiciliaria",
+    texto:
+      "En la planta baja o primer piso de tu casa, ¿a qué altura se encuentran empotrados los tomacorrientes y tu llave general de luz?",
+    opciones: {
+      A: "Están elevados a una altura segura (a la altura del pecho o más arriba).",
+      B: "Están bajitos, cerca del piso (a la altura de la rodilla o menos).",
+    },
+    condicion: "urbano",
+  },
+  {
+    id: "p9_calle",
+    numero: 9,
+    titulo: "Capacidad de Absorción de la Calle",
+    texto:
+      "Cuando caen lluvias fuertes en tu cuadra, ¿qué ocurre con el agua acumulada en el frontis de tu casa?",
+    opciones: {
+      A: "La calle es de tierra o tiene zanjas naturales que permiten que el agua corra y filtre relativamente rápido.",
+      B: "La calle está asfaltada pero se empoza como piscina porque no hay desagüe pluvial, subiendo rápido a la vereda.",
+    },
+    condicion: "urbano",
+  },
+  {
+    id: "p10_sotano",
+    numero: 10,
+    titulo: "Disposición de Ambientes Hundidos",
+    texto:
+      "¿Tu vivienda o negocio cuenta con sótanos, cocheras hundidas o cuartos viejos cuyo piso esté por debajo del nivel de la vereda?",
+    opciones: {
+      A: "No, toda la primera planta está exactamente al nivel de la vereda o más arriba (con gradas de ingreso).",
+      B: "Sí, tenemos ambientes subterráneos o habitaciones bajas que reciben directamente el agua de la calle.",
+    },
+    condicion: "urbano",
+  },
+  {
+    id: "p11_energia",
+    numero: 11,
+    titulo: "Dependencia de la Red de Energía Pública",
+    texto:
+      "Si las tormentas dañan las subestaciones y cortan la luz de la calle por 2 o 3 días seguidos, ¿cómo alumbras tu casa de noche?",
+    opciones: {
+      A: "Tengo luces de emergencia recargables portátiles o focos recargables listos.",
+      B: "Solo dependo de velas, fósforos o la linterna del celular.",
+    },
+    condicion: "urbano",
+  },
+  {
+    id: "p7r_rio",
+    numero: 7,
+    titulo: "Proximidad a Ríos o Acequias Grandes",
+    texto:
+      "¿Tu casa está ubicada cerca del cauce de un río (como el río La Leche o Zaña) o colindante a una acequia grande de regadío?",
+    opciones: {
+      A: "Lejos, mi casa está en una zona alta o metida en el pueblo donde el río no llega de forma directa.",
+      B: "Muy cerca (a dos cuadras o menos), en una zona donde históricamente ya ha habido desbordes.",
+    },
+    condicion: "rural",
+  },
+  {
+    id: "p8r_refugio",
+    numero: 8,
+    titulo: "Aislamiento Físico y Zonas de Refugio",
+    texto:
+      "Si el río se desborda y bloquea por completo la carretera o el puente de tu caserío, ¿tienes un punto seguro elevado donde refugiarte?",
+    opciones: {
+      A: "Sí, mi casa tiene un segundo piso firme o tengo un local comunal/colegio alto muy cerca a donde ir de inmediato.",
+      B: "No, mi vivienda es de un solo piso y todo el terreno alrededor es plano, no hay zonas altas cerca.",
+    },
+    condicion: "rural",
+  },
+  {
+    id: "p9r_agro",
+    numero: 9,
+    titulo: "Sustento Económico (Agro y Crianza de Animales)",
+    texto:
+      "¿Tienes animales de corral (chanchos, gallinas, pavos, vacas) o cultivos sembrados pegados a tu vivienda?",
+    opciones: {
+      A: "No, mi terreno es estrictamente para uso de vivienda familiar, no tengo cultivos ni crianzas grandes.",
+      B: "Sí, poseo animales de crianza o parcelas de cultivo colindantes que representan mi capital de trabajo.",
+    },
+    condicion: "rural",
+  },
+  {
+    id: "p10r_suelo",
+    numero: 10,
+    titulo: "Reacción del Suelo ante la Humedad",
+    texto:
+      "Cuando caen las primeras lluvias en tu zona, ¿cómo se pone el suelo de tu patio, entrada o corrales?",
+    opciones: {
+      A: "Es tierra suelta o pura arena que chupa el agua rápido y se seca ligero en pocas horas.",
+      B: "Se hace un barrial espeso, un lodo arcilloso pesado que retiene el agua y se queda empozado por días enteros.",
+    },
+    condicion: "rural",
+  },
+  {
+    id: "p11r_radio",
+    numero: 11,
+    titulo: "Conectividad y Comunicación de Alertas",
+    texto:
+      "Si se caen las antenas de telefonía y te quedas sin internet por completo en el caserío, ¿tienes cómo enterarte de las alarmas del COER Lambayeque?",
+    opciones: {
+      A: "Sí, contamos con una radio a pilas (a transistores) operativa para sintonizar las emisoras locales.",
+      B: "No tenemos radio a pilas, solo nos informamos por lo que llega al celular (WhatsApp/Facebook).",
+    },
+    condicion: "rural",
+  },
+  {
+    id: "p12_vectores",
+    numero: 12,
+    titulo: "Control de Vectores (Prevención del Dengue)",
+    texto:
+      "¿Existen en tu patio, huerto o techo objetos como llantas viejas, baldes rotos, botellas vacías o latas descubiertas que puedan juntar agua limpia de lluvia?",
+    opciones: {
+      A: "No, el patio y techo están limpios, despejados y lo que sirve está tapado o guardado boca abajo.",
+      B: "Sí, tengo cachivaches u objetos acumulados a la intemperie que van a llenarse de agua si llueve.",
+    },
+    condicion: null,
+  },
+  {
+    id: "p13_medicina",
+    numero: 13,
+    titulo: "Kit de Medicinas Específico para Inundaciones",
+    texto:
+      "¿Tu botiquín o caja de medicinas familiar cuenta con pastillas para la infección estomacal (diarreas) y sobres de suero de rehidratación oral?",
+    opciones: {
+      A: "Sí, está equipado con medicamentos gastrointestinales y suero oral listos.",
+      B: "No, solo tengo pastillas básicas para el dolor de cabeza, inflamación o fiebre (como paracetamol/ibuprofeno).",
+    },
+    condicion: null,
+  },
+  {
+    id: "p14_alimentos",
+    numero: 14,
+    titulo: "Protección de Alimentos Secos",
+    texto:
+      "¿Dónde guardas actualmente tus sacos o reservas de alimentos no perecederos (arroz, azúcar, fideos, conservas)?",
+    opciones: {
+      A: "Están guardados arriba en repisas elevadas, estantes altos o sobre tarimas de madera lejos del piso.",
+      B: "Estás guardados abajo en sacos o cajas directamente asentados sobre el suelo de la cocina o almacén.",
+    },
+    condicion: null,
+  },
+  {
+    id: "p15_vecinos",
+    numero: 15,
+    titulo: "Organización y Red de Apoyo de tu Barrio",
+    texto:
+      "¿Estás coordinado con tus vecinos de cuadra o conoces los puntos de reunión y zonas seguras asignadas por el presidente de tu junta vecinal o Defensa Civil?",
+    opciones: {
+      A: "Sí, estamos comunicados en la cuadra y sabemos exactamente hacia dónde ir si la emergencia se sale de control.",
+      B: "No, cada quien cuida su casa por su cuenta y desconozco por completo cuáles son los planes de evacuación del barrio.",
+    },
+    condicion: null,
+  },
+]
