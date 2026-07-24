@@ -4,8 +4,6 @@
 
 SAD-FEN es una herramienta de evaluación de preparación ante desastres orientada a la región de Lambayeque, Perú. El sistema combina un cuestionario de campo, un motor de reglas en Prolog y una aplicación web para estimar el nivel de riesgo de una vivienda frente al Fenómeno El Niño y recomendar acciones de mitigación.
 
-> Todo el contenido de dominio (cuestionario, reglas del sistema experto, recomendaciones) está en español y así debe mantenerse.
-
 ## Estructura del proyecto
 
 ```
@@ -80,8 +78,6 @@ pip install -r requeriments.txt    # Instalar dependencias
 uvicorn app.main:app --reload      # Servidor de desarrollo en http://localhost:8000
 ```
 
-> Nota: el archivo `requeriments.txt` está mal escrito intencionalmente (debería ser `requirements.txt`); no se corrige salvo indicación explícita.
-
 ### Sistema experto (Prolog)
 
 ```prolog
@@ -104,8 +100,3 @@ swi-prolog
 - Sigue la arquitectura por capas del backend (`api/`, `services/`, `engine/`, `schemas/`).
 - Usa `.jsx`, no `.tsx`, en el frontend.
 
-Para más detalles orientados a agentes/colaboradores automatizados, consulta [`AGENTS.md`](./AGENTS.md).
-
-## Licencia
-
-No especificada.
