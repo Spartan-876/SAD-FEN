@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import uuid
 
-from app.engine.prolog_engine import PrologEngine
+from app.engine.protocols import MotorProlog
 from app.schemas.evaluacion import (
     DimensionRiesgo,
     RespuestaCuestionario,
@@ -35,7 +35,7 @@ MAPEO_HECHOS: dict[str, tuple[str, str, str]] = {
 
 
 class EvaluacionService:
-    def __init__(self, engine: PrologEngine) -> None:
+    def __init__(self, engine: MotorProlog) -> None:
         self._engine = engine
 
     def evaluar(
@@ -55,7 +55,8 @@ class EvaluacionService:
         nivel_global = self._engine.nivel_riesgo_global(vivienda_id) or "bajo"
 
         dimensiones = self._obtener_dimensiones(vivienda_id)
-        recomendaciones = self._engine.recomendar(vivienda_id)
+        recomendaciones_raw = self._engine.recomendar(vivienda_id)
+        recomendaciones = self._ordenar_recomendaciones(recomendaciones_raw)
 
         return ResultadoEvaluacion(
             vivienda_id=vivienda_id,
@@ -63,6 +64,13 @@ class EvaluacionService:
             dimensiones=dimensiones,
             recomendaciones=recomendaciones,
         )
+
+    @staticmethod
+    def _ordenar_recomendaciones(recomendaciones: list[str]) -> list[str]:
+        """Ordena recomendaciones: genéricas primero, específicas (que empiezan con 'Además') después."""
+        genericas = [r for r in recomendaciones if not r.startswith("Además")]
+        especificas = [r for r in recomendaciones if r.startswith("Además")]
+        return genericas + especificas
 
     def _obtener_dimensiones(self, vivienda_id: str) -> list[DimensionRiesgo]:
         consultas = [

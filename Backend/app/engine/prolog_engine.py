@@ -7,7 +7,7 @@ from pyswip import Prolog
 
 logger = logging.getLogger(__name__)
 
-HECHOS_POR_VIVIENDA = [
+_HECHOS_POR_VIVIENDA: list[str] = [
     "zona",
     "material_muro",
     "techo",
@@ -32,6 +32,7 @@ HECHOS_POR_VIVIENDA = [
 
 
 class PrologEngine:
+    """Implementación del motor de inferencia Prolog usando pyswip."""
     def __init__(self, knowledge_base_path: Path) -> None:
         self._prolog = Prolog()
         self._base_path = knowledge_base_path
@@ -50,17 +51,17 @@ class PrologEngine:
         logger.info("Base de conocimiento cargada correctamente")
 
     def limpiar_hechos(self, vivienda_id: str) -> None:
-        for hecho in HECHOS_POR_VIVIENDA:
-            list(self._prolog.query(f"retractall({hecho}('{vivienda_id}', _))"))
+        for hecho in _HECHOS_POR_VIVIENDA:
+            for _ in self._prolog.query(f"retractall({hecho}('{vivienda_id}', _))"):
+                pass
 
     def assert_hecho(
         self, vivienda_id: str, functor: str, valor: str
     ) -> None:
-        list(
-            self._prolog.query(
-                f"assert({functor}('{vivienda_id}', '{valor}'))"
-            )
-        )
+        for _ in self._prolog.query(
+            f"assert({functor}('{vivienda_id}', '{valor}'))"
+        ):
+            pass
 
     def consultar_uno(self, consulta: str) -> str | None:
         resultados = list(self._prolog.query(consulta))

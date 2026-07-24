@@ -1,21 +1,30 @@
 \documentclass[12pt, letterpaper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
+\usepackage{times} % Usar fuente Times New Roman
 \usepackage{amsmath, amssymb, amsfonts}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{geometry}
 \usepackage{hyperref}
 \usepackage{setspace}
+\usepackage{fancyhdr} % Para encabezados
 \usepackage{listings}
-\lstloadlanguages{Prolog}
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt
+]{biblatex}
+\addbibresource{referencias.bib} % Archivo de bibliografía
+
+\lstloadlanguages{Prolog, Java, Python}
 \lstset{
   extendedchars=true,
   literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
-           {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
-           {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{\?`}}1 {¡}{{\!`}}1
-           {“}{{\ldquote}}1 {”}{{\rdquote}}1 {’}{{\textquoteright}}1 {-}{{\textemdash}}1
-           {ü}{{\"u}}1 {Ü}{{\"U}}1
+          {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+          {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{\?`}}1 {¡}{{\!`}}1
+          {“}{{\textquotedblleft}}1 {”}{{\textquotedblright}}1 {’}{{\textquoteright}}1 {-}{{\textemdash}}1
+          {ü}{{\"u}}1 {Ü}{{\"U}}1,
 }
 \usepackage{xcolor}
 \usepackage{booktabs}
@@ -26,25 +35,29 @@
 \usepackage{enumitem}
 \usepackage{tcolorbox}
 \usepackage{framed}
+\usepackage{csquotes} % Requerido por biblatex-apa
 
-% Configuración de márgenes
-\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+% Configuración de márgenes APA 7 (1 pulgada en todos los lados)
+\geometry{margin=1in}
 \doublespacing
+\setlength{\headheight}{30pt} % Ajuste para fancyhdr
+
 % Configuración de hipervínculos
 \hypersetup{
   colorlinks=true,
-  linkcolor=blue,
+  linkcolor=black, % Cambiado a negro para un estilo más APA
+  filecolor=black,
   urlcolor=blue,
   citecolor=black
 }
 
-% Configuración de listados de código (Prolog)
+% Configuración de listados de código
 \lstdefinelanguage{Prolog}{
   keywords={:-,
     dynamic, true, false, fail, repeat, cut, not, assert, retract,
     findall, bagof, setof, member, append, sort, length, var, nonvar,
-    integer, atom, compound, functor, arg, clause, call, write, nl,
-    is, =, =.., ==, \=, <, >, =<, >=, \+},
+    integer, atom, compound, functor, arg, clause, call, write, nl, is,
+    =, =.., ==, \\=, <, >, =<, >=, \\+},
   sensitive=true,
   comment=[l]{/},
   morecomment=[s]{/*}{*/},
@@ -59,86 +72,86 @@
   postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
   columns=fullflexible
 }
+\lstset{language=Prolog} % Establecer Prolog como lenguaje por defecto
 
-% Títulos de sección
-\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
-\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
-\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+% Títulos de sección estilo APA 7
+\titleformat{\section}
+  {\normalfont\Large\bfseries\centering}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{1em}{}
 
+% Configuración de encabezado APA 7 (número de página a la derecha)
+% Modificado para incluir logo y texto en todas las páginas
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\includegraphics[width=4cm]{logoUTP.png}}
+\fancyhead[R]{\small Lenguajes de Programacion - Marzo 2026}
+\renewcommand{\headrule}{\color{red}\hrule width\headwidth height 0.4pt}
+\fancyfoot[C]{\thepage} % Número de página centrado en el pie
+
+% Fix for LaTeX hooks: Generic hooks cannot be added to '\@makecaption'.
+% Redefine \caption to use \captionof from the caption package if available, or a simpler approach.
+\usepackage{caption} % Add this package for \captionof
+
+% Fix for hyperref and fancyhdr interaction
+\setcounter{secnumdepth}{0} % Ocultar numeración de secciones
 % Comando para diagramas
 \newcommand{\diagrambox}[3]{%
   \begin{figure}[H]
     \centering
     \begin{tcolorbox}[colback=white!90!blue, colframe=blue!60!black, width=\linewidth, arc=3mm, auto outer arc]
       \centering
-      \textbf{Diagrama Mermaid - #2}
+      \textbf{Diagrama - #2} % This line is fine
       \vspace{0.5cm}
-      \fbox{\parbox{0.95\linewidth}{\centering #3}}
+      \parbox{0.95\linewidth}{\centering #3}
     \end{tcolorbox}
     \caption{#2}
     \label{fig:#1}
   \end{figure}
 }
-
 % Inicio del documento
 \begin{document}
 
-% ==================== PORTADA ====================
-\begin{titlepage}
-  \centering 
-
-  \vspace*{1cm} 
-  
-  \begin{minipage}[t]{0.3\textwidth} 
-    \vspace{0pt} 
-    \includegraphics[width=\textwidth]{logoUTP.png}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[t]{0.6\textwidth}
-    \vspace{0pt}
-    \raggedleft
-    {\small Lenguajes de Programacion - Marzo 2026}
-  \end{minipage}
-
-  \vspace{2.5cm}
-  {\setstretch{0.5} \LARGE \textbf{Sistema Experto Basado en Prolog para la Evaluación de la Vulnerabilidad de la Vivienda ante el Fenómeno El Niño} \par}
-  \vspace{0.5cm}
-  {\Large \textbf{en el Departamento de Lambayeque}} 
-  \vspace{1cm}
-
-
-  \vspace{3cm}
-  
-  {\normalsize \textbf{Investigación presentada por:}} \\
-  \vspace{0.3cm}  
-  {\large [Nombre del Investigador]}
-  
-  \vspace{2cm}
-  
-  {\normalsize \textbf{Docente:}}
-  \vspace{0.3cm}
-  {\large [Dr. Asesor]}
-  
-  \vspace{2cm}
-  
-  {\normalsize \textbf{Chiclayo, Perú}} \\
-  \vspace{0.2cm}
-  {\normalsize \textbf{Julio de 2026}}
-  
-  \thispagestyle{empty}
-
-
+% ==================== PORTADA ==================== 
+\begin{titlepage} \thispagestyle{fancy} \fancyfoot{}
+    \centering
+    \vspace*{2.5cm}
+    
+    {\Large\bfseries Sistema Experto Basado en Prolog para la Evaluación de la Vulnerabilidad de la Vivienda ante el Fenómeno El Niño en el Departamento de Lambayeque\par}
+    
+    \vspace{3cm}
+    
+    {\large Lenguajes de Programación\par}
+    
+    \vspace{2cm}
+    
+    {\normalsize\bfseries Alumno:\par}
+    {Chapoñan Montaño John Anderson - u23231554\par}
+    
+    \vspace{2cm}
+    
+    {\normalsize\bfseries Docente:\par}
+    {Mg. Mariana Chavarry Chankay\par}
+    
+    \vfill
+    
+    {Julio de 2026\par}
+    \vspace{1cm}
+    
 \end{titlepage}
 
 % ==================== RESUMEN ====================
 \newpage
-\section*{Resumen}
+\pagenumbering{arabic} % Iniciar numeración en 1
+\section*{\centering\bfseries Resumen}
 \addcontentsline{toc}{section}{Resumen}
 
-El departamento de Lambayeque presenta una vulnerabilidad crítica frente al Fenómeno El Niño, afectando la infraestructura, la salud pública y la economía regional. Esta investigación desarrolla un sistema experto implementado en Prolog que evalúa el nivel de vulnerabilidad de una vivienda a partir de un cuestionario simplificado dirigido a ciudadanos sin conocimientos técnicos. El sistema transforma indicadores observables en hechos Prolog y, mediante reglas de inferencia, clasifica el riesgo en cinco dimensiones: estructural, sanitaria, eléctrica, hidrológica y epidemiológica, además de una dimensión transversal de resiliencia comunitaria. A partir de estas clasificaciones, el motor de recomendaciones genera acciones personalizadas para mitigar los riesgos. El trabajo demuestra la viabilidad de utilizar sistemas expertos como herramienta de apoyo para la gestión del riesgo de desastres, proporcionando una metodología accesible, integradora y escalable. Asimismo, se propone una arquitectura tecnológica cliente-servidor que integra el motor Prolog con un frontend en React y un backend en Python, permitiendo su uso por parte de la población sin conocimientos técnicos.
+\noindent El departamento de Lambayeque presenta una vulnerabilidad crítica frente al Fenómeno El Niño, afectando la infraestructura, la salud pública y la economía regional. Esta investigación desarrolla un sistema experto implementado en Prolog que evalúa el nivel de vulnerabilidad de una vivienda a partir de un cuestionario simplificado dirigido a ciudadanos sin conocimientos técnicos. El sistema transforma indicadores observables en hechos Prolog y, mediante reglas de inferencia, clasifica el riesgo en cinco dimensiones: estructural, sanitaria, eléctrica, hidrológica y epidemiológica, además de una dimensión transversal de resiliencia comunitaria. A partir de estas clasificaciones, el motor de recomendaciones genera acciones personalizadas para mitigar los riesgos. El trabajo demuestra la viabilidad de utilizar sistemas expertos como herramienta de apoyo para la gestión del riesgo de desastres, proporcionando una metodología accesible, integradora y escalable. Asimismo, se propone una arquitectura tecnológica cliente-servidor que integra el motor Prolog con un frontend en React y un backend en Python, permitiendo su uso por parte de la población sin conocimientos técnicos.
 
-\vspace{0.5cm}
-\textbf{Palabras clave:} Sistema experto, Prolog, Fenómeno El Niño, gestión del riesgo, vulnerabilidad estructural, Lambayeque, arquitectura cliente-servidor.
+\vspace{1cm}
+\noindent\hspace{0.5in}\textit{Palabras clave:} Sistema experto, Prolog, Fenómeno El Niño, gestión del riesgo, vulnerabilidad estructural, Lambayeque, arquitectura cliente-servidor.
 
 % ==================== ÍNDICE ====================
 \newpage
@@ -146,12 +159,13 @@ El departamento de Lambayeque presenta una vulnerabilidad crítica frente al Fen
 \newpage
 \listoffigures
 \listoftables
+\thispagestyle{fancy}
 
 % ==================== CUERPO DE LA INVESTIGACIÓN ====================
 \newpage
 \section{Introducción}
 
-El departamento de Lambayeque, ubicado en la costa norte del Perú, es históricamente uno de los territorios más afectados por el Fenómeno El Niño (FEN). La crecida de los ríos La Leche, Reque y Zaña, el colapso del drenaje pluvial urbano y los brotes de dengue y leptospirosis posteriores a las lluvias son eventos documentados de manera recurrente por CENEPRED, INDECI y el Ministerio de Salud \cite{plan2023, manualEVAR, minsa}.
+El departamento de Lambayeque, ubicado en la costa norte del Perú, es históricamente uno de los territorios más afectados por el Fenómeno El Niño (FEN). La crecida de los ríos La Leche, Reque y Zaña, el colapso del drenaje pluvial urbano y los brotes de dengue y leptospirosis posteriores a las lluvias son eventos documentados de manera recurrente por CENEPRED, INDECI y el Ministerio de Salud \parencite{gob_regional_lambayeque_2023, cenepred_manual_evar, minsa_alerta_2023}.
 
 Sin embargo, la mayoría de las herramientas de autoevaluación dirigidas a la población son o bien demasiado técnicas (exigen conocer resistencias de materiales, pendientes hidráulicas o secciones normativas de conductores eléctricos) o demasiado genéricas (listas de recomendaciones no personalizadas). Esta investigación propone cerrar esa brecha construyendo un sistema experto basado en reglas, implementado en Prolog, cuya base de conocimiento se alimenta de una encuesta redactada en lenguaje cotidiano.
 
@@ -177,7 +191,7 @@ La contribución central de este trabajo no es la encuesta —que ya existe y se
 
 \subsection{Caracterización Territorial}
 
-El departamento de Lambayeque presenta una transición altitudinal crítica que abarca desde la llanura de inundación costera (0 msnm) hasta las cumbres andinas (4000 msnm). Esta variación condiciona la geodinámica externa y define de manera diferencial la peligrosidad natural \cite{plan2023}:
+El departamento de Lambayeque presenta una transición altitudinal crítica que abarca desde la llanura de inundación costera (0 msnm) hasta las cumbres andinas (4000 msnm). Esta variación condiciona la geodinámica externa y define de manera diferencial la peligrosidad natural \parencite{gob_regional_lambayeque_2023}:
 
 \begin{itemize}
   \item \textbf{Zonas bajas (costa y valles aluviales)}: expuestas a inundaciones fluviales lentas de gran cobertura espacial debido al desbordamiento y sedimentación de los cauces de los ríos La Leche, Chancay y Zaña.
@@ -186,17 +200,17 @@ El departamento de Lambayeque presenta una transición altitudinal crítica que 
 
 \subsection{Impactos Históricos}
 
-Los eventos El Niño Costero han generado daños significativos en la infraestructura de Lambayeque, incluyendo viviendas, carreteras, puentes y sistemas de saneamiento. Cerca del 46\% de los daños se debieron a impactos en la infraestructura y el 40\% afectaron la vivienda \cite{diaz}. Las lluvias intensas provocan desbordes de ríos, activación de quebradas, inundaciones y deslizamientos que afectan a la población.
+Los eventos El Niño Costero han generado daños significativos en la infraestructura de Lambayeque, incluyendo viviendas, carreteras, puentes y sistemas de saneamiento. Cerca del 46\% de los daños se debieron a impactos en la infraestructura y el 40\% afectaron la vivienda \parencite{diaz_2018}. Las lluvias intensas provocan desbordes de ríos, activación de quebradas, inundaciones y deslizamientos que afectan a la población.
 
 \subsection{Marco Normativo}
 
-La gestión del riesgo en Lambayeque se enmarca en el Sistema Nacional de Gestión del Riesgo de Desastres (SINAGERD) y se articula mediante instrumentos como el Plan de Prevención y Reducción del Riesgo de Desastres del Gobierno Regional de Lambayeque 2023-2030, cuyo objetivo es reducir las vulnerabilidades existentes y prevenir la generación de nuevos riesgos \cite{plan2023}.
+La gestión del riesgo en Lambayeque se enmarca en el Sistema Nacional de Gestión del Riesgo de Desastres (SINAGERD) y se articula mediante instrumentos como el Plan de Prevención y Reducción del Riesgo de Desastres del Gobierno Regional de Lambayeque 2023-2030, cuyo objetivo es reducir las vulnerabilidades existentes y prevenir la generación de nuevos riesgos \parencite{gob_regional_lambayeque_2023}.
 
 \section{Justificación Científica}
 
 \subsection{Fundamentos de los Sistemas Expertos}
 
-Los sistemas expertos constituyen una de las aplicaciones más exitosas de la inteligencia artificial simbólica. Se caracterizan por \cite{expertos}:
+Los sistemas expertos constituyen una de las aplicaciones más exitosas de la inteligencia artificial simbólica. Se caracterizan por \parencite{gonzalez_2000}:
 
 \begin{itemize}
   \item \textbf{Base de conocimiento}: contiene el conocimiento del dominio en forma de hechos y reglas.
@@ -204,11 +218,11 @@ Los sistemas expertos constituyen una de las aplicaciones más exitosas de la in
   \item \textbf{Interfaz de usuario}: permite la interacción con el sistema.
 \end{itemize}
 
-Prolog (Programación en Lógica) es un lenguaje especialmente adecuado para la implementación de sistemas expertos debido a su capacidad para representar conocimiento declarativo mediante hechos y reglas, y su motor de inferencia basado en resolución lógica \cite{prolog}.
+Prolog (Programación en Lógica) es un lenguaje especialmente adecuado para la implementación de sistemas expertos debido a su capacidad para representar conocimiento declarativo mediante hechos y reglas, y su motor de inferencia basado en resolución lógica \parencite{bratko_2012}.
 
 \subsection{Aplicación a la Gestión del Riesgo}
 
-La evaluación de la vulnerabilidad ante desastres naturales involucra múltiples indicadores interrelacionados: características constructivas, condiciones del suelo, infraestructura sanitaria, redes eléctricas, factores epidemiológicos, entre otros. Un sistema experto permite \cite{prolog}:
+La evaluación de la vulnerabilidad ante desastres naturales involucra múltiples indicadores interrelacionados: características constructivas, condiciones del suelo, infraestructura sanitaria, redes eléctricas, factores epidemiológicos, entre otros. Un sistema experto permite \parencite{bratko_2012}:
 
 \begin{itemize}
   \item \textbf{Integrar conocimiento multidisciplinario} (ingeniería civil, sanitaria, eléctrica, epidemiología).
@@ -219,22 +233,22 @@ La evaluación de la vulnerabilidad ante desastres naturales involucra múltiple
 
 \subsection{Base Científica de las Dimensiones de Riesgo}
 
-La literatura técnica revisada permite sostener que \cite{rne, drenaje1, drenaje2, osinergmin, leptospira, minsa, geresa, cenepred}:
+La literatura técnica revisada permite sostener que \parencite{min_vivienda_rne, typsa_drenaje, usat_drenaje, osinergmin_cne, perez_leptospira, minsa_alerta_2023, geresa_sala, cenepred_jornada}:
 
 \begin{enumerate}
   \item \textbf{Vulnerabilidad estructural}: La vulnerabilidad física de la vivienda de tierra depende de variables medibles en laboratorio que, aunque el ciudadano no puede medir, se correlacionan con características observables como el material del muro, la presencia de refuerzos y la pendiente del techo.
   \item \textbf{Vulnerabilidad sanitaria}: El colapso sanitario en Lambayeque no depende únicamente de la lluvia, sino de la interacción entre la red pública y dispositivos domiciliarios de bajo costo, como la válvula antirretorno, cuya presencia o ausencia sí puede reportar el ciudadano.
   \item \textbf{Riesgo eléctrico}: El riesgo eléctrico doméstico está gobernado por normas de instalación que se traducen en un indicador observable simple: la altura de tomacorrientes respecto al nivel de posible inundación interior.
   \item \textbf{Riesgo hidrológico}: La configuración geomorfológica de la llanura aluvial de Lambayeque se caracteriza por pendientes topográficas extremadamente bajas que impiden el drenaje natural por gravedad.
-  \item \textbf{Riesgo epidemiológico}: El riesgo post-inundación está documentado por el Ministerio de Salud y estudios académicos que vinculan la presencia de agua estancada y el contacto con lodos contaminados con el incremento de casos \cite{minsa, geresa, leptospira}.
-  \item \textbf{Resiliencia comunitaria}: Siguiendo el marco metodológico oficial de CENEPRED (Manual EVAR), en el que el riesgo se descompone en exposición, fragilidad y resiliencia \cite{manualEVAR}, este trabajo incorpora una sexta dimensión para dar cabida a las preguntas que describen la capacidad de reacción del hogar.
+  \item \textbf{Riesgo epidemiológico}: El riesgo post-inundación está documentado por el Ministerio de Salud y estudios académicos que vinculan la presencia de agua estancada y el contacto con lodos contaminados con el incremento de casos \parencite{minsa_alerta_2023, geresa_sala, perez_leptospira}.
+  \item \textbf{Resiliencia comunitaria}: Siguiendo el marco metodológico oficial de CENEPRED (Manual EVAR), en el que el riesgo se descompone en exposición, fragilidad y resiliencia \parencite{cenepred_manual_evar}, este trabajo incorpora una sexta dimensión para dar cabida a las preguntas que describen la capacidad de reacción del hogar.
 \end{enumerate}
 
 \section{Arquitectura General del Sistema Experto}
 
 El sistema experto propuesto sigue una arquitectura de cinco capas que se ilustra en la Figura \ref{fig:arquitectura_general}.
 
-\diagrambox{arquitectura_general}{Arquitectura general del sistema experto}{
+\diagrambox{arquitectura_general}{Arquitectura general del sistema experto}{\label{fig:arquitectura_general}
   \begin{tabular}{p{3cm} p{10cm}}
     \textbf{Capa de Entrada} & Usuario $\rightarrow$ Cuestionario de 15 preguntas $\rightarrow$ Respuestas A/B \\
     \textbf{Capa de Transformación} & Módulo de Traducción $\rightarrow$ Hechos Prolog $\rightarrow$ Base de Hechos Dinámica \\
@@ -347,9 +361,9 @@ El sistema utiliza los siguientes indicadores de riesgo, agrupados por dimensió
 \begin{tabular}{@{}p{0.3\linewidth}p{0.4\linewidth}p{0.25\linewidth}@{}}
 \toprule
 \textbf{Indicador} & \textbf{Descripción} & \textbf{Referencia} \\ \midrule
-Material del muro & Tipo de material predominante en muros portantes & NTE E.080 \cite{rne} \\
-Configuración del techo & Pendiente hidráulica de la cubierta & NTE E.030 \cite{rne} \\
-Protección temporal del techo & Eficacia de impermeabilización provisional & \cite{drenaje1} \\ \bottomrule
+Material del muro & Tipo de material predominante en muros portantes & NTE E.080 \parencite{min_vivienda_rne} \\
+Configuración del techo & Pendiente hidráulica de la cubierta & NTE E.030 \parencite{min_vivienda_rne} \\
+Protección temporal del techo & Eficacia de impermeabilización provisional & \parencite{typsa_drenaje} \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -362,8 +376,8 @@ Protección temporal del techo & Eficacia de impermeabilización provisional & \
 \begin{tabular}{@{}p{0.3\linewidth}p{0.4\linewidth}p{0.25\linewidth}@{}}
 \toprule
 \textbf{Indicador} & \textbf{Descripción} & \textbf{Referencia} \\ \midrule
-Válvula antirretorno & Dispositivo check en conexión de desagüe & Ingeniería sanitaria \cite{drenaje2} \\
-Almacenamiento de agua & Capacidad de reserva hídrica domiciliaria & \cite{geresa} \\ \bottomrule
+Válvula antirretorno & Dispositivo check en conexión de desagüe & Ingeniería sanitaria \parencite{usat_drenaje} \\
+Almacenamiento de agua & Capacidad de reserva hídrica domiciliaria & \parencite{geresa_sala} \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -376,7 +390,7 @@ Almacenamiento de agua & Capacidad de reserva hídrica domiciliaria & \cite{gere
 \begin{tabular}{@{}p{0.3\linewidth}p{0.4\linewidth}p{0.25\linewidth}@{}}
 \toprule
 \textbf{Indicador} & \textbf{Descripción} & \textbf{Referencia} \\ \midrule
-Altura de instalaciones eléctricas & Distancia al nivel de posible inundación & CNE \cite{osinergmin} \\
+Altura de instalaciones eléctricas & Distancia al nivel de posible inundación & CNE \parencite{osinergmin_cne} \\
 Respaldo energético & Disponibilidad de iluminación autónoma & - \\ \bottomrule
 \end{tabular}
 \end{table}
@@ -390,10 +404,10 @@ Respaldo energético & Disponibilidad de iluminación autónoma & - \\ \bottomru
 \begin{tabular}{@{}p{0.3\linewidth}p{0.4\linewidth}p{0.25\linewidth}@{}}
 \toprule
 \textbf{Indicador} & \textbf{Descripción} & \textbf{Referencia} \\ \midrule
-Capacidad de absorción de la calle & Permeabilidad del pavimento urbano & \cite{drenaje1, drenaje2} \\
+Capacidad de absorción de la calle & Permeabilidad del pavimento urbano & \parencite{typsa_drenaje, usat_drenaje} \\
 Ambientes hundidos & Cota de pisos respecto a la vereda & - \\
-Proximidad a ríos & Distancia a cauces activos & SIGRID \cite{plan2023} \\
-Reacción del suelo & Capacidad de infiltración & \cite{cenepred} \\ \bottomrule
+Proximidad a ríos & Distancia a cauces activos & SIGRID \parencite{gob_regional_lambayeque_2023} \\
+Reacción del suelo & Capacidad de infiltración & \parencite{cenepred_jornada} \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -406,8 +420,8 @@ Reacción del suelo & Capacidad de infiltración & \cite{cenepred} \\ \bottomrul
 \begin{tabular}{@{}p{0.3\linewidth}p{0.4\linewidth}p{0.25\linewidth}@{}}
 \toprule
 \textbf{Indicador} & \textbf{Descripción} & \textbf{Referencia} \\ \midrule
-Criaderos de vectores & Objetos que acumulan agua estancada & MINSA \cite{minsa} \\
-Kit médico & Disponibilidad de medicamentos para emergencias & GERESA \cite{geresa} \\ \bottomrule
+Criaderos de vectores & Objetos que acumulan agua estancada & MINSA \parencite{minsa_alerta_2023} \\
+Kit médico & Disponibilidad de medicamentos para emergencias & GERESA \parencite{geresa_sala} \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -420,12 +434,12 @@ Kit médico & Disponibilidad de medicamentos para emergencias & GERESA \cite{ger
 \begin{tabular}{@{}p{0.3\linewidth}p{0.4\linewidth}p{0.25\linewidth}@{}}
 \toprule
 \textbf{Indicador} & \textbf{Descripción} & \textbf{Referencia} \\ \midrule
-Población vulnerable & Presencia de niños, ancianos o personas con discapacidad & Manual EVAR \cite{manualEVAR} \\
-Refugio alto & Disponibilidad de zona de evacuación vertical & \cite{manualEVAR} \\
-Dependencia agropecuaria & Exposición económica de activos rurales & \cite{manualEVAR} \\
-Radio de comunicación & Redundancia del canal de alerta temprana & \cite{manualEVAR} \\
+Población vulnerable & Presencia de niños, ancianos o personas con discapacidad & Manual EVAR \parencite{cenepred_manual_evar} \\
+Refugio alto & Disponibilidad de zona de evacuación vertical & \parencite{cenepred_manual_evar} \\
+Dependencia agropecuaria & Exposición económica de activos rurales & \parencite{cenepred_manual_evar} \\
+Radio de comunicación & Redundancia del canal de alerta temprana & \parencite{cenepred_manual_evar} \\
 Alimentos elevados & Protección de reservas alimentarias & - \\
-Red de apoyo vecinal & Organización comunitaria & SINAGERD \cite{manualEVAR} \\ \bottomrule
+Red de apoyo vecinal & Organización comunitaria & SINAGERD \parencite{cenepred_manual_evar} \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -501,7 +515,7 @@ Para cada pregunta se documentan cinco elementos:
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Tipo de zona donde se ubica la vivienda \\
-Fundamento científico & El Plan Regional SIGRID-CENEPRED diferencia peligros costero-urbanos (inundación pluvial, colapso de redes) de peligros de valle-rural (desborde fluvial, aislamiento vial) \cite{plan2023}. \\
+Fundamento científico & El Plan Regional SIGRID-CENEPRED diferencia peligros costero-urbanos (inundación pluvial, colapso de redes) de peligros de valle-rural (desborde fluvial, aislamiento vial) \parencite{gob_regional_lambayeque_2023}. \\
 Justificación & Determina qué rama del cuestionario se activa, evitando preguntar por infraestructura que no aplica al contexto del usuario. \\
 Representación en Prolog & \texttt{zona(Id, urbana).} o \texttt{zona(Id, rural).} \\
 Inferencia permitida & Selecciona el conjunto de reglas de riesgo eléctrico e hidrológico aplicable. \\ \bottomrule
@@ -517,7 +531,7 @@ Inferencia permitida & Selecciona el conjunto de reglas de riesgo eléctrico e h
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Material de las paredes principales del primer piso \\
-Fundamento científico & La Norma Técnica de Edificación NTE E.080 regula el comportamiento del adobe; este material pierde cohesión por saturación de humedad, a diferencia de la mampostería confinada \cite{rne}. \\
+Fundamento científico & La Norma Técnica de Edificación NTE E.080 regula el comportamiento del adobe; este material pierde cohesión por saturación de humedad, a diferencia de la mampostería confinada \parencite{min_vivienda_rne}. \\
 Justificación & Variable observable más determinante de la vulnerabilidad estructural, identificable sin instrumentos. \\
 Representación en Prolog & \texttt{material\_muro(Id, noble).} o \texttt{material\_muro(Id, precario).} \\
 Inferencia permitida & Clasificación de vulnerabilidad estructural (baja para ladrillo, alta para adobe). \\ \bottomrule
@@ -533,7 +547,7 @@ Inferencia permitida & Clasificación de vulnerabilidad estructural (baja para l
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Presencia de inclinación visible en el techo \\
-Fundamento científico & Un techo plano sin pendiente retiene agua y sobrecarga la cubierta; uno inclinado favorece el escurrimiento inmediato \cite{drenaje1}. \\
+Fundamento científico & Un techo plano sin pendiente retiene agua y sobrecarga la cubierta; uno inclinado favorece el escurrimiento inmediato \parencite{typsa_drenaje}. \\
 Justificación & Observable directamente (caída visible o no), sin medir grados de pendiente. \\
 Representación en Prolog & \texttt{techo(Id, inclinado).} o \texttt{techo(Id, plano).} \\
 Inferencia permitida & Clasificación de vulnerabilidad estructural, en combinación con P2. \\ \bottomrule
@@ -549,7 +563,7 @@ Inferencia permitida & Clasificación de vulnerabilidad estructural, en combinac
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Tipo de sistema de almacenamiento de agua \\
-Fundamento científico & La interrupción del servicio de agua durante emergencias por lluvias está documentada; el almacenamiento seguro reduce el riesgo de consumo de agua contaminada \cite{geresa}. \\
+Fundamento científico & La interrupción del servicio de agua durante emergencias por lluvias está documentada; el almacenamiento seguro reduce el riesgo de consumo de agua contaminada \parencite{geresa_sala}. \\
 Justificación & Pregunta observable (tanque/cisterna vs. baldes) sin volúmenes normativos. \\
 Representación en Prolog & \texttt{almacenamiento\_agua(Id, tecnificado).} o \texttt{almacenamiento\_agua(Id, precario).} \\
 Inferencia permitida & Evaluación del riesgo epidemiológico por consumo de agua contaminada. \\ \bottomrule
@@ -565,7 +579,7 @@ Inferencia permitida & Evaluación del riesgo epidemiológico por consumo de agu
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Presencia de bebés, niños, ancianos o personas con discapacidad \\
-Fundamento científico & El Manual EVAR de CENEPRED define la fragilidad social como componente central de la vulnerabilidad \cite{manualEVAR}. \\
+Fundamento científico & El Manual EVAR de CENEPRED define la fragilidad social como componente central de la vulnerabilidad \parencite{cenepred_manual_evar}. \\
 Justificación & Variable central de fragilidad social, conocida sin ambigüedad por el usuario. \\
 Representación en Prolog & \texttt{poblacion\_vulnerable(Id, si).} o \texttt{poblacion\_vulnerable(Id, no).} \\
 Inferencia permitida & Clasificación de vulnerabilidad social y resiliencia. \\ \bottomrule
@@ -581,7 +595,7 @@ Inferencia permitida & Clasificación de vulnerabilidad social y resiliencia. \\
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Forma de aseguramiento de protecciones temporales \\
-Fundamento científico & Una cubierta plástica anclada solo con peso muerto es removida fácilmente por viento y lluvia; un anclaje estructurado resiste mejor \cite{drenaje1}. \\
+Fundamento científico & Una cubierta plástica anclada solo con peso muerto es removida fácilmente por viento y lluvia; un anclaje estructurado resiste mejor \parencite{typsa_drenaje}. \\
 Justificación & Práctica de mitigación ya adoptada o no, observable sin conocimientos técnicos. \\
 Representación en Prolog & \texttt{techo\_protegido(Id, adecuado).} o \texttt{techo\_protegido(Id, inadecuado).} \\
 Inferencia permitida & Agrava o atenúa el resultado de P2+P3. \\ \bottomrule
@@ -599,7 +613,7 @@ Inferencia permitida & Agrava o atenúa el resultado de P2+P3. \\ \bottomrule
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Presencia de válvula check antirretorno instalada \\
-Fundamento científico & El alcantarillado sanitario de Lambayeque no está diseñado para agua pluvial; sin dispositivo antirretorno, la red saturada puede refluir hacia la vivienda \cite{drenaje2}. \\
+Fundamento científico & El alcantarillado sanitario de Lambayeque no está diseñado para agua pluvial; sin dispositivo antirretorno, la red saturada puede refluir hacia la vivienda \parencite{usat_drenaje}. \\
 Justificación & Única variable observable relacionada directamente con el reflujo de aguas servidas. \\
 Representación en Prolog & \texttt{valvula\_check(Id, si).} o \texttt{valvula\_check(Id, no).} \\
 Inferencia permitida & Clasificación de vulnerabilidad sanitaria. \\ \bottomrule
@@ -615,7 +629,7 @@ Inferencia permitida & Clasificación de vulnerabilidad sanitaria. \\ \bottomrul
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Altura de tomacorrientes y llave general \\
-Fundamento científico & El Código Nacional de Electricidad exige distancias mínimas de seguridad; instalaciones bajas quedan expuestas al agua de inundación interior \cite{osinergmin}. \\
+Fundamento científico & El Código Nacional de Electricidad exige distancias mínimas de seguridad; instalaciones bajas quedan expuestas al agua de inundación interior \parencite{osinergmin_cne}. \\
 Justificación & Altura verificable a simple vista, sin conocer la norma específica. \\
 Representación en Prolog & \texttt{altura\_electrica(Id, segura).} o \texttt{altura\_electrica(Id, baja).} \\
 Inferencia permitida & Clasificación de riesgo eléctrico. \\ \bottomrule
@@ -631,7 +645,7 @@ Inferencia permitida & Clasificación de riesgo eléctrico. \\ \bottomrule
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Comportamiento del agua en la calle durante lluvias \\
-Fundamento científico & Ausencia histórica de drenaje pluvial segregado en las ciudades de Lambayeque, documentada en estudios de diseño de drenaje urbano \cite{drenaje1, drenaje2}. \\
+Fundamento científico & Ausencia histórica de drenaje pluvial segregado en las ciudades de Lambayeque, documentada en estudios de diseño de drenaje urbano \parencite{typsa_drenaje, usat_drenaje}. \\
 Justificación & Observable en cada temporada de lluvias, sin conocer la pendiente topográfica exacta. \\
 Representación en Prolog & \texttt{absorcion\_calle(Id, buena).} o \texttt{absorcion\_calle(Id, mala).} \\
 Inferencia permitida & Clasificación de riesgo hidrológico (urbano). \\ \bottomrule
@@ -681,7 +695,7 @@ Inferencia permitida & Clasificación de resiliencia comunitaria. \\ \bottomrule
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Distancia de la vivienda a cauces activos \\
-Fundamento científico & La cuenca del río La Leche y otros cauces menores presentan antecedentes documentados de desborde durante El Niño \cite{plan2023}. \\
+Fundamento científico & La cuenca del río La Leche y otros cauces menores presentan antecedentes documentados de desborde durante El Niño \parencite{gob_regional_lambayeque_2023}. \\
 Justificación & La cercanía histórica al cauce es el principal predictor de exposición a inundación fluvial. \\
 Representación en Prolog & \texttt{proximidad\_rio(Id, lejos).} o \texttt{proximidad\_rio(Id, cerca).} \\
 Inferencia permitida & Clasificación de riesgo hidrológico (rural). \\ \bottomrule
@@ -697,7 +711,7 @@ Inferencia permitida & Clasificación de riesgo hidrológico (rural). \\ \bottom
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Existencia de segundo piso o refugio alto cercano \\
-Fundamento científico & La existencia de edificación elevada condiciona la evacuación vertical oportuna ante aislamiento vial (SAT-INDECI/CENEPRED) \cite{manualEVAR}. \\
+Fundamento científico & La existencia de edificación elevada condiciona la evacuación vertical oportuna ante aislamiento vial (SAT-INDECI/CENEPRED) \parencite{cenepred_manual_evar}. \\
 Justificación & Variable de resiliencia física observable sin ambigüedad. \\
 Representación en Prolog & \texttt{refugio\_alto(Id, si).} o \texttt{refugio\_alto(Id, no).} \\
 Inferencia permitida & Clasificación de resiliencia comunitaria. \\ \bottomrule
@@ -713,7 +727,7 @@ Inferencia permitida & Clasificación de resiliencia comunitaria. \\ \bottomrule
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Presencia de animales o cultivos colindantes \\
-Fundamento científico & Pérdida de animales y cultivos colindantes: principal exposición económica rural en el marco EVAR de CENEPRED \cite{manualEVAR}. \\
+Fundamento científico & Pérdida de animales y cultivos colindantes: principal exposición económica rural en el marco EVAR de CENEPRED \parencite{cenepred_manual_evar}. \\
 Justificación & Diferencia el impacto económico esperado, más allá del daño físico. \\
 Representación en Prolog & \texttt{dependencia\_agropecuaria(Id, no).} o \texttt{dependencia\_agropecuaria(Id, si).} \\
 Inferencia permitida & Clasificación de impacto económico / resiliencia. \\ \bottomrule
@@ -729,7 +743,7 @@ Inferencia permitida & Clasificación de impacto económico / resiliencia. \\ \b
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Comportamiento del suelo del patio o corrales con las lluvias \\
-Fundamento científico & La capacidad de infiltración determina si el agua se drena o queda empozada por días \cite{cenepred}. \\
+Fundamento científico & La capacidad de infiltración determina si el agua se drena o queda empozada por días \parencite{cenepred_jornada}. \\
 Justificación & Observable tras las primeras lluvias, sin coeficiente de infiltración exacto. \\
 Representación en Prolog & \texttt{suelo\_humedad(Id, drena).} o \texttt{suelo\_humedad(Id, retiene).} \\
 Inferencia permitida & Agrava el riesgo hidrológico en combinación con P7R. \\ \bottomrule
@@ -745,7 +759,7 @@ Inferencia permitida & Agrava el riesgo hidrológico en combinación con P7R. \\
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Disponibilidad de radio a pilas \\
-Fundamento científico & Caída de antenas de telefonía documentada en zonas rurales; el SAT del COER Lambayeque contempla difusión radial redundante \cite{manualEVAR}. \\
+Fundamento científico & Caída de antenas de telefonía documentada en zonas rurales; el SAT del COER Lambayeque contempla difusión radial redundante \parencite{cenepred_manual_evar}. \\
 Justificación & Pregunta de resiliencia comunicacional, observable. \\
 Representación en Prolog & \texttt{radio\_comunicacion(Id, si).} o \texttt{radio\_comunicacion(Id, no).} \\
 Inferencia permitida & Clasificación de resiliencia comunitaria. \\ \bottomrule
@@ -763,7 +777,7 @@ Inferencia permitida & Clasificación de resiliencia comunitaria. \\ \bottomrule
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Existencia de objetos que acumulan agua en patio o techo \\
-Fundamento científico & El MINSA ha emitido alertas epidemiológicas para Lambayeque por dengue y leptospirosis asociadas a lluvias y criaderos de \textit{Aedes aegypti} \cite{minsa}. \\
+Fundamento científico & El MINSA ha emitido alertas epidemiológicas para Lambayeque por dengue y leptospirosis asociadas a lluvias y criaderos de \textit{Aedes aegypti} \parencite{minsa_alerta_2023}. \\
 Justificación & Variable de manejo doméstico de criaderos, directamente observable y modificable. \\
 Representación en Prolog & \texttt{criaderos\_vectores(Id, no).} o \texttt{criaderos\_vectores(Id, si).} \\
 Inferencia permitida & Clasificación de riesgo epidemiológico. \\ \bottomrule
@@ -779,7 +793,7 @@ Inferencia permitida & Clasificación de riesgo epidemiológico. \\ \bottomrule
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Composición del botiquín familiar \\
-Fundamento científico & Brotes de enfermedad diarreica aguda posteriores a inundaciones documentados por la GERESA Lambayeque \cite{geresa}. \\
+Fundamento científico & Brotes de enfermedad diarreica aguda posteriores a inundaciones documentados por la GERESA Lambayeque \parencite{geresa_sala}. \\
 Justificación & Resiliencia sanitaria doméstica, observable sin conocimientos médicos. \\
 Representación en Prolog & \texttt{kit\_medico(Id, si).} o \texttt{kit\_medico(Id, no).} \\
 Inferencia permitida & Clasificación de resiliencia comunitaria. \\ \bottomrule
@@ -811,7 +825,7 @@ Inferencia permitida & Clasificación de resiliencia comunitaria. \\ \bottomrule
 \toprule
 \textbf{Elemento} & \textbf{Descripción} \\ \midrule
 Indicador observable & Coordinación con vecinos y conocimiento de planes de evacuación \\
-Fundamento científico & El SINAGERD asigna un rol central a la organización comunitaria como mecanismo no estructural de reducción del riesgo \cite{manualEVAR}. \\
+Fundamento científico & El SINAGERD asigna un rol central a la organización comunitaria como mecanismo no estructural de reducción del riesgo \parencite{cenepred_manual_evar}. \\
 Justificación & Componente comunitaria de la resiliencia, no reducible a infraestructura física. \\
 Representación en Prolog & \texttt{red\_apoyo\_vecinal(Id, si).} o \texttt{red\_apoyo\_vecinal(Id, no).} \\
 Inferencia permitida & Clasificación de resiliencia comunitaria. \\ \bottomrule
@@ -1004,7 +1018,7 @@ riesgo_epidemiologico(Id, bajo) :-
 
 \subsection{Regla 6 — Resiliencia Comunitaria (Transversal)}
 
-Esta categoría integra las variables del cuestionario que el marco EVAR de CENEPRED clasifica dentro de fragilidad social y resiliencia \cite{manualEVAR}: población vulnerable (P5), respaldo energético (P11, urbana), refugio alto y radio (P8R, P11R, rural), dependencia agropecuaria (P9R), kit médico (P13), alimentos elevados (P14) y red de apoyo vecinal (P15).
+Esta categoría integra las variables del cuestionario que el marco EVAR de CENEPRED clasifica dentro de fragilidad social y resiliencia \parencite{cenepred_manual_evar}: población vulnerable (P5), respaldo energético (P11, urbana), refugio alto y radio (P8R, P11R, rural), dependencia agropecuaria (P9R), kit médico (P13), alimentos elevados (P14) y red de apoyo vecinal (P15).
 
 \textbf{Resultado esperado:} \texttt{baja\_resiliencia | media\_resiliencia | alta\_resiliencia}
 
@@ -1349,13 +1363,12 @@ El motor de recomendaciones descrito en la sección anterior genera consejos gen
 \subsubsection*{Fundamento Científico de las Recomendaciones Específicas}
 
 Cada una de estas recomendaciones está sustentada en la literatura técnica revisada:
-
 \begin{itemize}
-  \item Las recomendaciones estructurales se basan en la NTE E.080 [5] y en los estudios de vulnerabilidad de techos planos [7].
-  \item Las recomendaciones sanitarias se fundamentan en el diseño del alcantarillado de EPSSEL y la función de la válvula check [8].
-  \item Las recomendaciones epidemiológicas se apoyan en las alertas del MINSA [10] y los estudios de la GERESA [11].
-  \item Las recomendaciones de resiliencia se alinean con el Manual EVAR de CENEPRED [2].
-  \item Las recomendaciones hidrológicas rurales se basan en el Plan Regional de Gestión del Riesgo [1] y los estudios de suelos [12].
+  \item Las recomendaciones estructurales se basan en la NTE E.080 \parencite{min_vivienda_rne} y en los estudios de vulnerabilidad de techos planos \parencite{usat_drenaje}.
+  \item Las recomendaciones sanitarias se fundamentan en el diseño del alcantarillado de EPSSEL y la función de la válvula check \parencite{usat_drenaje}.
+  \item Las recomendaciones epidemiológicas se apoyan en las alertas del MINSA \parencite{minsa_alerta_2023} y los estudios de la GERESA \parencite{geresa_sala}.
+  \item Las recomendaciones de resiliencia se alinean con el Manual EVAR de CENEPRED \parencite{cenepred_manual_evar}.
+  \item Las recomendaciones hidrológicas rurales se basan en el Plan Regional de Gestión del Riesgo \parencite{gob_regional_lambayeque_2023} y los estudios de suelos \parencite{cenepred_jornada}.
 \end{itemize}
 
 \subsubsection*{Ventajas de la Ampliación del Motor de Recomendaciones}
@@ -1482,10 +1495,10 @@ El motor de inferencia aplica las reglas definidas en la base de conocimiento so
 
 \subsection{Paso 7: Python convierte el resultado en JSON}
 
-El backend procesa los resultados obtenidos de Prolog y construye una respuesta JSON estructurada:
+El backend procesa los resultados obtenidos de Prolog y construye una respuesta JSON estructurada.
 
-\begin{lstlisting}[language=JavaScript, caption={Ejemplo de respuesta JSON}]
-  {
+\begin{lstlisting}[language=Java, caption={Ejemplo de respuesta JSON}]
+{
     "riesgo_global": "muy_alto",
     "estructural": "muy_alta",
     "sanitario": "alta",
@@ -1607,14 +1620,14 @@ La separación en componentes independientes proporciona los siguientes benefici
   \item \textbf{Identificación temprana}: El sistema permite identificar viviendas de alto riesgo antes de que ocurra un evento extremo.
   \item \textbf{Priorización de intervenciones}: Las clasificaciones de riesgo facilitan la asignación eficiente de recursos.
   \item \textbf{Educación y concienciación}: El proceso de responder el cuestionario y recibir recomendaciones educa a la población sobre medidas de prevención.
-  \item \textbf{Articulación con políticas públicas}: Los resultados pueden alimentar los instrumentos de gestión del riesgo, como el Plan de Prevención y Reducción del Riesgo de Desastres del Gobierno Regional de Lambayeque \cite{plan2023}.
+  \item \textbf{Articulación con políticas públicas}: Los resultados pueden alimentar los instrumentos de gestión del riesgo, como el Plan de Prevención y Reducción del Riesgo de Desastres del Gobierno Regional de Lambayeque \parencite{gob_regional_lambayeque_2023}.
 \end{enumerate}
 
 \subsection{Limitaciones y Trabajo Futuro}
 
 \begin{enumerate}
   \item \textbf{Validación empírica}: Se requiere validar el sistema con datos reales de viviendas en Lambayeque.
-  \item \textbf{Integración con SIG}: La incorporación de datos geoespaciales del SIGRID permitiría una evaluación más precisa del riesgo hidrológico \cite{manualEVAR}.
+  \item \textbf{Integración con SIG}: La incorporación de datos geoespaciales del SIGRID permitiría una evaluación más precisa del riesgo hidrológico \parencite{cenepred_manual_evar}.
   \item \textbf{Ampliación del dominio}: El sistema puede extenderse para evaluar otros tipos de amenazas (sismos, sequías, etc.).
   \item \textbf{Interfaz de usuario}: El desarrollo de una interfaz gráfica o web facilitaría la adopción por parte de la población y las autoridades.
 \end{enumerate}
@@ -1623,36 +1636,8 @@ La separación en componentes independientes proporciona los siguientes benefici
 \clearpage 
 \phantomsection 
 \addcontentsline{toc}{section}{Referencias}
+\printbibliography
 
-\begin{thebibliography}{99}
-
-\bibitem{plan2023} Gobierno Regional de Lambayeque / CENEPRED. \textit{Plan de Prevención y Reducción del Riesgo de Desastres 2023-2030, Departamento de Lambayeque}. Sistema de Información para la Gestión del Riesgo de Desastres (SIGRID).
-
-\bibitem{manualEVAR} CENEPRED. \textit{Manual para la Evaluación de Riesgos originados por Fenómenos Naturales (Manual EVAR) — Inundaciones}.
-
-\bibitem{expertos} González, A. \textit{Sistemas Expertos: Fundamentos y Aplicaciones}. Madrid: McGraw-Hill, 2000.
-
-\bibitem{prolog} Bratko, I. \textit{Prolog Programming for Artificial Intelligence}, 4th ed. Addison-Wesley, 2012.
-
-\bibitem{rne} Ministerio de Vivienda, Construcción y Saneamiento. \textit{Norma Técnica E.080 "Diseño y Construcción con Tierra Reforzada"}. Reglamento Nacional de Edificaciones.
-
-\bibitem{drenaje1} TYPSA Perú. \textit{Drenaje pluvial Chiclayo}.
-
-\bibitem{drenaje2} Repositorio Institucional USAT. \textit{Análisis y diseño del sistema de drenaje pluvial urbano del distrito de Pátapo, provincia de Chiclayo, región Lambayeque}.
-
-\bibitem{osinergmin} Osinergmin. \textit{Código Nacional de Electricidad – Tomo V: Instalaciones de Baja Tensión}, 2022.
-
-\bibitem{leptospira} ResearchGate. \textit{Repercusión del fenómeno de El Niño Costero en la aparición de primeros casos de Leptospirosis en zona urbana de la región Lambayeque, Perú}.
-
-\bibitem{minsa} Ministerio de Salud del Perú (MINSA). \textit{Minsa emite alerta epidemiológica ante el incremento del riesgo por Leptospirosis en regiones que registran lluvias intensas}.
-
-\bibitem{geresa} Gerencia Regional de Salud de Lambayeque (GERESA). \textit{Sala Situacional Dengue Región Lambayeque}.
-
-\bibitem{cenepred} Centro Nacional de Estimación, Prevención y Reducción del Riesgo de Desastres — CENEPRED. \textit{Presentación de estudios de escenarios de riesgo ante lluvias intensas asociadas al FEN, jornada técnica de Lambayeque}.
-
-\bibitem{diaz} Díaz Cabrejos, P. \textit{Impacto económico del fenómeno de El Niño Costero en infraestructura educativa en el departamento de Lambayeque}. Alicia-Concytec.
-
-\end{thebibliography}
 
 \newpage
 \appendix

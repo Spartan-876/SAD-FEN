@@ -217,155 +217,146 @@ nivel_riesgo_global(Id, Global) :-
 % ============================================================
 
 % ---- Hechos de Recomendación Genéricas ----
-recomendacion(estructural, 'Reforzar o sustituir los muros de adobe y corregir la pendiente del techo').
-recomendacion(sanitaria, 'Instalar una válvula check antirretorno en la conexión de desagüe').
-recomendacion(electrico, 'Elevar tomacorrientes y llave general a una altura segura').
-recomendacion(hidrologico_urbano, 'Evitar el uso de ambientes hundidos durante alertas de lluvia y gestionar drenaje temporal').
-recomendacion(hidrologico_rural, 'Identificar y ensayar la ruta hacia el refugio alto más cercano ante desborde del río').
-recomendacion(epidemiologico, 'Eliminar criaderos de agua estancada y tapar los reservorios de almacenamiento').
-recomendacion(resiliencia, 'Reforzar el kit médico familiar, las reservas elevadas de alimentos y coordinar con la junta vecinal').
+recomendacion(rec_estructural_generica, 'Reforzar o sustituir los muros de adobe y corregir la pendiente del techo').
+recomendacion(rec_sanitaria_generica, 'Instalar una válvula check antirretorno en la conexión de desagüe').
+recomendacion(rec_electrico_generica, 'Elevar tomacorrientes y llave general a una altura segura').
+recomendacion(rec_hidrologico_urbano_generica, 'Evitar el uso de ambientes hundidos durante alertas de lluvia y gestionar drenaje temporal').
+recomendacion(rec_hidrologico_rural_generica, 'Identificar y ensayar la ruta hacia el refugio alto más cercano ante desborde del río').
+recomendacion(rec_epidemiologico_generica, 'Eliminar criaderos de agua estancada y tapar los reservorios de almacenamiento').
+recomendacion(rec_resiliencia_generica, 'Reforzar el kit médico familiar, las reservas elevadas de alimentos y coordinar con la junta vecinal').
 
 % ---- Hechos de Recomendación Específicas ----
 % Estructurales
-recomendacion(estructural_techo_plano, 'Priorizar la instalación de un techo inclinado con calaminas para evitar la acumulación de agua que debilita los muros de adobe.').
-recomendacion(estructural_proteccion, 'Asegurar correctamente los plásticos con una estructura inclinada y clavada, no solo con peso muerto, para proteger los muros de adobe.').
-recomendacion(estructural_loza_plana, 'Revisar los sumideros y la membrana impermeable del techo plano para evitar filtraciones que afecten la estructura de concreto.').
+recomendacion(rec_estructural_techo_plano, 'Para el techo de adobe, instalar calaminas inclinadas para evitar acumulación de agua.').
+recomendacion(rec_estructural_proteccion, 'Asegurar correctamente los plásticos con una estructura inclinada y clavada, no solo con peso muerto, para proteger los muros de adobe.').
+recomendacion(rec_estructural_loza_plana, 'Revisar los sumideros y la membrana impermeable del techo plano para evitar filtraciones que afecten la estructura de concreto.').
 
 % Sanitarias
-recomendacion(sanitaria_calle_empozada, 'Instalar una válvula check antirretorno y, además, colocar sacos de arena en la puerta para evitar el ingreso de agua de la calle.').
-recomendacion(sanitaria_sotano, 'Instalar una válvula check y elevar todos los equipos y muebles del sótano o ambiente hundido.').
+recomendacion(rec_sanitaria_calle_empozada, 'Colocar sacos de arena en la puerta para evitar el ingreso de agua de la calle.').
+recomendacion(rec_sanitaria_sotano, 'Elevar todos los equipos y muebles del sótano o ambiente hundido.').
 
 % Epidemiológicas
-recomendacion(epidemiologica_criaderos, 'Eliminar todos los recipientes que acumulan agua (llantas, botellas, latas) y tapar herméticamente los baldes y bidones de almacenamiento.').
-recomendacion(epidemiologica_techo_plano, 'Revisar el techo plano, ya que puede acumular agua de lluvia y convertirse en un criadero de mosquitos.').
+recomendacion(rec_epidemiologica_criaderos, 'Revisar especialmente llantas, botellas y latas descubiertas en el patio.').
+recomendacion(rec_epidemiologica_techo_plano, 'Revisar el techo plano, ya que puede acumular agua de lluvia y convertirse en un criadero de mosquitos.').
 
 % Resiliencia
-recomendacion(resiliencia_apoyo, 'Coordinar con los vecinos para que una persona esté designada para ayudar a los niños, ancianos o personas con discapacidad durante la evacuación.').
-recomendacion(resiliencia_kit_agua, 'Adquirir un botiquín con suero oral y medicamentos para diarrea, ya que el almacenamiento de agua en baldes aumenta el riesgo de contaminación.').
-recomendacion(resiliencia_alimentos, 'Elevar todos los alimentos no perecederos a repisas altas, ya que el agua de la calle puede ingresar por los ambientes hundidos.').
-
-% Hidrológicas rurales
-recomendacion(hidrologico_rural_evacuar, 'Ante la alerta de lluvias intensas, evacuar hacia el refugio alto identificado y asegurar los animales de corral en zonas elevadas.').
-recomendacion(hidrologico_rural_refugio, 'Identificar de forma urgente un punto alto cercano (cerro, colegio, iglesia) y coordinar con la comunidad un plan de evacuación vertical.').
+recomendacion(rec_resiliencia_apoyo, 'Designar a una persona para asistir a niños, ancianos o personas con discapacidad durante la evacuación.').
 
 % Protección de activos agropecuarios
-recomendacion(proteccion_activos, 'Proteger los animales de corral y cultivos, reubicándolos temporalmente en zonas altas o asegurando los corrales ante la crecida del río.').
+recomendacion(rec_proteccion_activos, 'Proteger los animales de corral y cultivos, reubicándolos temporalmente en zonas altas o asegurando los corrales ante la crecida del río.').
 
-% ---- Reglas de activación de recomendaciones genéricas ----
-aplica_recomendacion(Id, R) :-
+% ---- Nuevas recomendaciones específicas ----
+recomendacion(rec_almacenamiento_agua, 'Mejorar el almacenamiento de agua utilizando recipientes herméticos y elevados para evitar contaminación durante emergencias.').
+recomendacion(rec_respaldo_energia, 'Adquirir linternas recargables o lámparas de emergencia para iluminar durante cortes de energía.').
+recomendacion(rec_radio_comunicacion, 'Adquirir una radio a pilas (transistor) para recibir alertas y comunicados de emergencia cuando falle la telefonía e internet.').
+recomendacion(rec_kit_medico, 'Preparar un botiquín familiar con suero de rehidratación oral y medicamentos para diarrea, ya que las inundaciones aumentan el riesgo de enfermedades gastrointestinales.').
+recomendacion(rec_alimentos_elevados, 'Elevar todos los alimentos no perecederos (arroz, azúcar, fideos, conservas) a repisas o estantes altos para protegerlos de inundaciones y humedad.').
+recomendacion(rec_refugio_alto_rural, 'Identificar de forma urgente un punto alto cercano (cerro, colegio, iglesia) donde refugiarse en caso de inundación, y coordinar con la comunidad un plan de evacuación.').
+recomendacion(rec_suelo_retiene, 'Mejorar el drenaje del terreno (zanjas perimetrales, canales de desvío) para evitar encharcamientos prolongados que debilitan los cimientos y dañan cultivos.').
+
+% ---- Condiciones que activan las recomendaciones ----
+condicion_recomendacion(Id, rec_estructural_generica) :-
     vulnerabilidad_estructural(Id, Nivel),
-    member(Nivel, [alta, muy_alta]),
-    recomendacion(estructural, R).
+    member(Nivel, [alta, muy_alta]).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_sanitaria_generica) :-
     vulnerabilidad_sanitaria(Id, Nivel),
-    member(Nivel, [alta]),
-    recomendacion(sanitaria, R).
+    member(Nivel, [alta]).
 
-aplica_recomendacion(Id, R) :-
-    riesgo_electrico(Id, alto),
-    recomendacion(electrico, R).
+condicion_recomendacion(Id, rec_electrico_generica) :-
+    riesgo_electrico(Id, alto).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_hidrologico_urbano_generica) :-
     zona(Id, urbana),
     riesgo_hidrologico(Id, Nivel),
-    member(Nivel, [alto, muy_alto]),
-    recomendacion(hidrologico_urbano, R).
+    member(Nivel, [alto, muy_alto]).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_hidrologico_rural_generica) :-
     zona(Id, rural),
     riesgo_hidrologico(Id, Nivel),
-    member(Nivel, [alto, muy_alto]),
-    recomendacion(hidrologico_rural, R).
+    member(Nivel, [alto, muy_alto]).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_epidemiologico_generica) :-
     riesgo_epidemiologico(Id, Nivel),
-    member(Nivel, [medio, alto]),
-    recomendacion(epidemiologico, R).
+    member(Nivel, [medio, alto]).
 
-aplica_recomendacion(Id, R) :-
-    capacidad_resiliencia(Id, baja_resiliencia),
-    recomendacion(resiliencia, R).
+condicion_recomendacion(Id, rec_resiliencia_generica) :-
+    capacidad_resiliencia(Id, baja_resiliencia).
 
-% ---- Reglas de activación de recomendaciones específicas ----
 % Estructurales específicas
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_estructural_techo_plano) :-
     material_muro(Id, precario),
-    techo(Id, plano),
-    recomendacion(estructural_techo_plano, R).
+    techo(Id, plano).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_estructural_proteccion) :-
     material_muro(Id, precario),
-    techo_protegido(Id, inadecuado),
-    recomendacion(estructural_proteccion, R).
+    techo_protegido(Id, inadecuado).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_estructural_loza_plana) :-
     material_muro(Id, noble),
-    techo(Id, plano),
-    recomendacion(estructural_loza_plana, R).
+    techo(Id, plano).
 
 % Sanitarias específicas
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_sanitaria_calle_empozada) :-
     zona(Id, urbana),
     valvula_check(Id, no),
-    absorcion_calle(Id, mala),
-    recomendacion(sanitaria_calle_empozada, R).
+    absorcion_calle(Id, mala).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_sanitaria_sotano) :-
     zona(Id, urbana),
     valvula_check(Id, no),
-    ambiente_hundido(Id, si),
-    recomendacion(sanitaria_sotano, R).
+    ambiente_hundido(Id, si).
 
 % Epidemiológicas específicas
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_epidemiologica_criaderos) :-
     criaderos_vectores(Id, si),
-    almacenamiento_agua(Id, precario),
-    recomendacion(epidemiologica_criaderos, R).
+    almacenamiento_agua(Id, precario).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_epidemiologica_techo_plano) :-
     criaderos_vectores(Id, si),
-    techo(Id, plano),
-    recomendacion(epidemiologica_techo_plano, R).
+    techo(Id, plano).
 
 % Resiliencia específica
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_resiliencia_apoyo) :-
     poblacion_vulnerable(Id, si),
-    red_apoyo_vecinal(Id, no),
-    recomendacion(resiliencia_apoyo, R).
-
-aplica_recomendacion(Id, R) :-
-    kit_medico(Id, no),
-    almacenamiento_agua(Id, precario),
-    recomendacion(resiliencia_kit_agua, R).
-
-aplica_recomendacion(Id, R) :-
-    alimentos_elevados(Id, no),
-    ambiente_hundido(Id, si),
-    recomendacion(resiliencia_alimentos, R).
-
-% Hidrológicas rurales específicas
-aplica_recomendacion(Id, R) :-
-    zona(Id, rural),
-    proximidad_rio(Id, cerca),
-    suelo_humedad(Id, retiene),
-    recomendacion(hidrologico_rural_evacuar, R).
-
-aplica_recomendacion(Id, R) :-
-    zona(Id, rural),
-    proximidad_rio(Id, cerca),
-    refugio_alto(Id, no),
-    recomendacion(hidrologico_rural_refugio, R).
+    red_apoyo_vecinal(Id, no).
 
 % Protección de activos agropecuarios
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_proteccion_activos) :-
     zona(Id, rural),
-    dependencia_agropecuaria(Id, si),
-    recomendacion(proteccion_activos, R).
+    dependencia_agropecuaria(Id, si).
+
+% ---- Condiciones de nuevas recomendaciones específicas ----
+condicion_recomendacion(Id, rec_almacenamiento_agua) :-
+    almacenamiento_agua(Id, precario).
+
+condicion_recomendacion(Id, rec_respaldo_energia) :-
+    zona(Id, urbana),
+    respaldo_energia(Id, no).
+
+condicion_recomendacion(Id, rec_radio_comunicacion) :-
+    zona(Id, rural),
+    radio_comunicacion(Id, no).
+
+condicion_recomendacion(Id, rec_kit_medico) :-
+    kit_medico(Id, no).
+
+condicion_recomendacion(Id, rec_alimentos_elevados) :-
+    alimentos_elevados(Id, no).
+
+condicion_recomendacion(Id, rec_refugio_alto_rural) :-
+    zona(Id, rural),
+    refugio_alto(Id, no).
+
+condicion_recomendacion(Id, rec_suelo_retiene) :-
+    zona(Id, rural),
+    suelo_humedad(Id, retiene).
 
 % ---- Predicado principal para obtener todas las recomendaciones ----
 recomendar(Id, Lista) :-
-    findall(R, aplica_recomendacion(Id, R), Lista).
+    findall(Texto,
+            (condicion_recomendacion(Id, RecID), recomendacion(RecID, Texto)),
+            Lista).
 
 % ============================================================
 % EJEMPLO DE USO Y CARGA DE DATOS DE PRUEBA
