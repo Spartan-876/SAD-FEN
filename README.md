@@ -91,12 +91,6 @@ swi-prolog
 
 - El **Frontend** ya tiene su propio flujo de evaluación implementado (bienvenida, cuestionario dinámico, carga y resultado), con estilos en Tailwind CSS y consumo de la API del backend.
 - El **Backend** implementa la arquitectura por capas de servicio descrita arriba.
-- Aún no hay pruebas automatizadas ni integración continua (CI).
 - La URL del backend está fijada como constante (`http://localhost:8000`) en `Frontend/src/lib/api.js`; aún no es configurable por variables de entorno.
 
-## Contribuir
-
-- Mantén el contenido de dominio (preguntas, reglas, recomendaciones) en español.
-- Sigue la arquitectura por capas del backend (`api/`, `services/`, `engine/`, `schemas/`).
-- Usa `.jsx`, no `.tsx`, en el frontend.
 
