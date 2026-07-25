@@ -41,6 +41,13 @@ function App() {
     }
   }, [resultado])
 
+  const handleFinalizar = useCallback(() => {
+    setRespuestas({})
+    setResultado(null)
+    setError(null)
+    setPaso("bienvenida")
+  }, [])
+
   return (
     <div className="min-h-screen bg-background">
       <Header paso={paso} onNavigate={handleNavigate} />
@@ -79,7 +86,7 @@ function App() {
       {paso === "recomendaciones" && resultado && (
         <Recomendaciones
           recomendaciones={resultado.recomendaciones}
-          onFinalizar={() => setPaso("bienvenida")}
+          onFinalizar={handleFinalizar}
         />
       )}
     </div>

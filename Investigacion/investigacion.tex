@@ -10,6 +10,7 @@
 \usepackage{setspace}
 \usepackage{fancyhdr} % Para encabezados
 \usepackage{textcomp}
+\usepackage{hyperref}
 \usepackage{ragged2e}
 \usepackage[T1]{fontenc}
 \usepackage{listings}
@@ -42,6 +43,13 @@
 \usepackage{tcolorbox}
 \usepackage{framed}
 \usepackage{csquotes} % Requerido por biblatex-apa
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue, % Define el color de los enlaces a URLs
+}
 
 % Configuración de márgenes APA 7 (1 pulgada en todos los lados)
 \geometry{margin=1in}
@@ -123,11 +131,11 @@
 % ==================== PORTADA ==================== 
 \begin{titlepage} \thispagestyle{fancy} \fancyfoot{}
     \centering
-    \vspace*{2.5cm}
+    \vspace*{1cm}
     
     {\Large\bfseries Sistema Experto Basado en Prolog para la Evaluación de la Vulnerabilidad de la Vivienda ante el Fenómeno El Niño en el Departamento de Lambayeque\par}
     
-    \vspace{3cm}
+    \vspace{2cm}
     
     {\large Lenguajes de Programación\par}
     
@@ -140,7 +148,13 @@
     
     {\normalsize\bfseries Docente:\par}
     {Mg. Mariana Chavarry Chankay\par}
+
+    \vspace{2cm}
     
+    {\normalsize\bfseries Link:\par}
+    \url{https://youtu.be/XMhUmysvrxw}
+    
+    \vspace{2cm}
     \vfill
     
     {Julio de 2026\par}
