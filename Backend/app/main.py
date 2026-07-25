@@ -7,27 +7,27 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import router
-from app.config import settings
+from app.config import configuracion
 from app.engine.prolog_engine import PrologEngine
 from app.services.evaluacion_service import EvaluacionService
 
 logging.basicConfig(
-    level=logging.DEBUG if settings.debug else logging.INFO,
+    level=logging.DEBUG if configuracion.debug else logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
 
-def _create_evaluacion_service(kb_path: Path) -> EvaluacionService:
-    engine = PrologEngine(kb_path)
-    return EvaluacionService(engine)
+def _crear_servicio_evaluacion(ruta_base_conocimientos: Path) -> EvaluacionService:
+    motor = PrologEngine(ruta_base_conocimientos)
+    return EvaluacionService(motor)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+async def lifespan(aplicacion: FastAPI) -> AsyncGenerator[None, None]:
     logger.info("Iniciando SAD-FEN API")
-    app.state.evaluacion_service = _create_evaluacion_service(
-        settings.knowledge_base_path
+    aplicacion.state.evaluacion_service = _crear_servicio_evaluacion(
+        configuracion.ruta_base_conocimientos
     )
     logger.info("Motor Prolog y servicios inicializados")
     yield
@@ -43,7 +43,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
+    allow_origins=configuracion.cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -54,4 +54,4 @@ app.include_router(router)
 
 @app.get("/health")
 async def health_check() -> dict[str, str]:
-    return {"status": "ok"}
+    return {"estado": "ok"}

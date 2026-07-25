@@ -4,6 +4,7 @@ import Bienvenida from "./components/Bienvenida"
 import Cuestionario from "./components/Cuestionario"
 import Cargando from "./components/Cargando"
 import Resultado from "./components/Resultado"
+import Recomendaciones from "./components/Recomendaciones"
 import { preguntas } from "./data/preguntas"
 import { evaluarVivienda } from "./lib/api"
 
@@ -30,20 +31,24 @@ function App() {
     }
   }, [respuestas])
 
-  const handleNuevaEvaluacion = useCallback(() => {
-    setRespuestas({})
-    setResultado(null)
-    setError(null)
-    setPaso("cuestionario")
-  }, [])
+  const handleNavigate = useCallback((destino) => {
+    if (destino === "bienvenida") {
+      setPaso("bienvenida")
+    } else if (destino === "cuestionario") {
+      setPaso("cuestionario")
+    } else if (destino === "resultado" && resultado) {
+      setPaso("resultado")
+    }
+  }, [resultado])
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header paso={paso} onNavigate={handleNavigate} />
 
       {error && (
         <div className="max-w-3xl mx-auto mt-4 px-4">
-          <div className="bg-danger/10 border border-danger/30 text-danger rounded-lg p-4 text-sm">
+          <div className="bg-danger/10 border border-danger/30 text-danger rounded-xl p-4 text-sm flex items-center gap-3">
+            <span className="material-icons">error</span>
             {error}
           </div>
         </div>
@@ -67,7 +72,14 @@ function App() {
       {paso === "resultado" && resultado && (
         <Resultado
           resultado={resultado}
-          onNuevaEvaluacion={handleNuevaEvaluacion}
+          onVerRecomendaciones={() => setPaso("recomendaciones")}
+        />
+      )}
+
+      {paso === "recomendaciones" && resultado && (
+        <Recomendaciones
+          recomendaciones={resultado.recomendaciones}
+          onFinalizar={() => setPaso("bienvenida")}
         />
       )}
     </div>

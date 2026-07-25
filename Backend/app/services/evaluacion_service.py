@@ -34,28 +34,27 @@ MAPEO_HECHOS: dict[str, tuple[str, str, str]] = {
 
 
 class EvaluacionService:
-    def __init__(self, engine: MotorProlog) -> None:
-        self._engine = engine
+    def __init__(self, motor: MotorProlog) -> None:
+        self._motor = motor
 
     def evaluar(
         self, respuestas: RespuestaCuestionario
     ) -> ResultadoEvaluacion:
         vivienda_id = f"v_{uuid.uuid4().hex[:8]}"
 
-        self._engine.limpiar_hechos(vivienda_id)
+        self._motor.limpiar_hechos(vivienda_id)
 
-        resp_dict = respuestas.model_dump()
+        datos_respuestas = respuestas.model_dump()
         for campo, (functor, valor_a, valor_b) in MAPEO_HECHOS.items():
-            if resp_dict[campo] is None:
+            if datos_respuestas[campo] is None:
                 continue
-            valor = valor_a if resp_dict[campo] == "A" else valor_b
-            self._engine.assert_hecho(vivienda_id, functor, valor)
+            valor = valor_a if datos_respuestas[campo] == "A" else valor_b
+            self._motor.assert_hecho(vivienda_id, functor, valor)
 
-        nivel_global = self._engine.nivel_riesgo_global(vivienda_id) or "bajo"
+        nivel_global = self._motor.nivel_riesgo_global(vivienda_id) or "bajo"
 
         dimensiones = self._obtener_dimensiones(vivienda_id)
-        recomendaciones_raw = self._engine.recomendar(vivienda_id)
-        recomendaciones = self._ordenar_recomendaciones(recomendaciones_raw)
+        recomendaciones = self._motor.recomendar(vivienda_id)
 
         return ResultadoEvaluacion(
             vivienda_id=vivienda_id,
@@ -64,20 +63,14 @@ class EvaluacionService:
             recomendaciones=recomendaciones,
         )
 
-    @staticmethod
-    def _ordenar_recomendaciones(recomendaciones: list[str]) -> list[str]:
-        genericas = [r for r in recomendaciones if not r.startswith("Además")]
-        especificas = [r for r in recomendaciones if r.startswith("Además")]
-        return genericas + especificas
-
     def _obtener_dimensiones(self, vivienda_id: str) -> list[DimensionRiesgo]:
         consultas = [
-            ("Vulnerabilidad Estructural", self._engine.vulnerabilidad_estructural),
-            ("Vulnerabilidad Sanitaria", self._engine.vulnerabilidad_sanitaria),
-            ("Riesgo Eléctrico", self._engine.riesgo_electrico),
-            ("Riesgo Hidrológico", self._engine.riesgo_hidrologico),
-            ("Riesgo Epidemiológico", self._engine.riesgo_epidemiologico),
-            ("Capacidad de Resiliencia", self._engine.capacidad_resiliencia),
+            ("Vulnerabilidad Estructural", self._motor.vulnerabilidad_estructural),
+            ("Vulnerabilidad Sanitaria", self._motor.vulnerabilidad_sanitaria),
+            ("Riesgo Eléctrico", self._motor.riesgo_electrico),
+            ("Riesgo Hidrológico", self._motor.riesgo_hidrologico),
+            ("Riesgo Epidemiológico", self._motor.riesgo_epidemiologico),
+            ("Capacidad de Resiliencia", self._motor.capacidad_resiliencia),
         ]
 
         dimensiones: list[DimensionRiesgo] = []

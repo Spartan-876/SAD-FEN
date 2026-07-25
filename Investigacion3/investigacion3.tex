@@ -9,7 +9,11 @@
 \usepackage{hyperref}
 \usepackage{setspace}
 \usepackage{fancyhdr} % Para encabezados
+\usepackage{textcomp}
+\usepackage{ragged2e}
+\usepackage[T1]{fontenc}
 \usepackage{listings}
+\renewcommand{\lstlistingname}{Código}
 \usepackage[
   backend=biber,
   style=apa,
@@ -19,12 +23,14 @@
 
 \lstloadlanguages{Prolog, Java, Python}
 \lstset{
+  inputencoding=utf8,
   extendedchars=true,
-  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
-          {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
-          {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{\?`}}1 {¡}{{\!`}}1
-          {“}{{\textquotedblleft}}1 {”}{{\textquotedblright}}1 {’}{{\textquoteright}}1 {-}{{\textemdash}}1
-          {ü}{{\"u}}1 {Ü}{{\"U}}1,
+  literate=
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {ñ}{{\~{n}}}1 {Ñ}{{\~{N}}}1 {¿}{{\?`}}1 {¡}{{\!`}}1
+    {ü}{{\"{u}}}1 {Ü}{{\"{U}}}1
+    {“}{{"}}1 {”}{{"}}1 {’}{{'}}1 {´}{{'}}1 {-}{{-}}1
 }
 \usepackage{xcolor}
 \usepackage{booktabs}
@@ -128,7 +134,7 @@
     \vspace{2cm}
     
     {\normalsize\bfseries Alumno:\par}
-    {Chapoñan Montaño John Anderson - u23231554\par}
+    {Chapoñan Montaño John Anderson - U23231554\par}
     
     \vspace{2cm}
     
@@ -244,6 +250,8 @@ La literatura técnica revisada permite sostener que \parencite{min_vivienda_rne
   \item \textbf{Resiliencia comunitaria}: Siguiendo el marco metodológico oficial de CENEPRED (Manual EVAR), en el que el riesgo se descompone en exposición, fragilidad y resiliencia \parencite{cenepred_manual_evar}, este trabajo incorpora una sexta dimensión para dar cabida a las preguntas que describen la capacidad de reacción del hogar.
 \end{enumerate}
 
+\clearpage
+
 \section{Arquitectura General del Sistema Experto}
 
 El sistema experto propuesto sigue una arquitectura de cinco capas que se ilustra en la Figura \ref{fig:arquitectura_general}. 
@@ -263,6 +271,8 @@ Las capas son:
   \item \textbf{Capa de Clasificación}: Motor de inferencia que clasifica riesgos.
   \item \textbf{Capa de Recomendación}: Generación de informe personalizado.
 \end{enumerate}
+
+\clearpage
 
 \section{Base de Conocimiento}
 
@@ -334,7 +344,7 @@ P12 = "Sí, hay objetos que acumulan agua" & \texttt{criaderos\_vectores(v001, s
 \end{tabular}
 \end{table}
 
-Este paso es fundamental para mantener la encuesta simple sin renunciar al rigor: el indicador técnico (p. ej., resistencia a compresión del adobe) nunca se le pregunta al usuario; se pregunta el indicador observable (material del muro) que la literatura técnica asocia con ese indicador, y es la regla —no la pregunta— la que carga el conocimiento experto.
+Este paso es fundamental para mantener la encuesta simple sin renunciar al rigor: el indicador técnico (p. ej., resistencia a compresión del adobe) nunca se le pregunta al usuario; se pregunta el indicador observable (material del muro) que la literatura técnica asocia con ese indicador, y es la regla no la pregunta la que carga el conocimiento experto.
 
 \section{Indicadores de Riesgo Utilizados}
 
@@ -438,7 +448,7 @@ El cuestionario fue diseñado para que un ciudadano sin conocimientos técnicos 
 \subsection{Principios de Diseño}
 
 \begin{enumerate}
-  \item \textbf{Lenguaje accesible}: Se evitan términos técnicos (ej. "esbeltez", "permeabilidad", "coeficiente de infiltración").
+  \item \textbf{Lenguaje accesible}: Se evitan términos técnicos (ej."esbeltez", "permeabilidad", "coeficiente de infiltración").
   \item \textbf{Opciones discretas}: Respuestas cerradas que eliminan ambigüedad.
   \item \textbf{Observabilidad}: La información debe ser verificable por el usuario.
   \item \textbf{Jerarquía}: Preguntas troncales y ramas especializadas según ubicación.
@@ -824,17 +834,12 @@ Inferencia permitida & Clasificación de resiliencia comunitaria. \\ \bottomrule
 
 El motor de inferencia es el propio mecanismo de resolución de Prolog: cada regla es una cláusula de Horn, y una consulta se resuelve mediante SLD-resolution (unificación de la meta con la cabeza de una cláusula y resolución recursiva del cuerpo). Esto corresponde a un encadenamiento hacia atrás (backward chaining), típico de los sistemas expertos basados en reglas.
 
-\diagrambox{proceso_inferencia}{Proceso de inferencia del sistema experto}{
-  \begin{tabular}{p{2cm} p{11cm}}
-    1. & Consulta del Usuario \\
-    2. & Generación de Hechos \\
-    3. & Base de Hechos Dinámica \\
-    4. & Aplicación de Reglas (SLD-resolution) \\
-    5. & Resultado: \texttt{muy\_alto}, \texttt{alto}, \texttt{medio}, \texttt{bajo}, \texttt{no\_aplica} \\
-    6. & Generación de Recomendaciones \\
-    7. & Informe Personalizado
-  \end{tabular}
-}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{Recursos/motorInferencia.png}
+  \caption{Proceso de inferencia del sistema experto}
+  \label{fig:proceso_inferencia}
+\end{figure}
 
 \subsection{Regla 1 — Vulnerabilidad Estructural}
 
@@ -843,7 +848,7 @@ El motor de inferencia es el propio mecanismo de resolución de Prolog: cada reg
 \textbf{Resultado esperado:} \texttt{muy\_alta | alta | media | baja}
 
 \begin{lstlisting}[language=Prolog, caption={Reglas de vulnerabilidad estructural}]
-vulnerabilidad_estructural(Id, muy_alta) :-
+  vulnerabilidad_estructural(Id, muy_alta) :-
     material_muro(Id, precario),
     techo(Id, plano),
     techo_protegido(Id, inadecuado), !.
@@ -864,7 +869,7 @@ vulnerabilidad_estructural(Id, baja) :-
     techo(Id, inclinado).
 \end{lstlisting}
 
-\textbf{Nota metodológica:} La regla no inventa umbrales numéricos de esbeltez o resistencia a compresión. Esos valores pertenecen al diseño estructural profesional y no son medibles por el ciudadano. Lo que la regla captura es la correlación cualitativa, avalada por la norma, entre material precario + ausencia de pendiente de techo + anclaje deficiente de protecciones temporales y una mayor probabilidad de colapso o daño estructural severo.
+\textbf{Nota metodológica:} La regla prescinde de métricas numéricas avanzadas de resistencia estructural al no ser medibles por el ciudadano común. En cambio, recoge la vinculación cualitativa avalada normativamente entre tres factores clave (materiales precarios, techos sin pendiente y protecciones temporales mal fijadas) y una elevada probabilidad de colapso o falla estructural grave.
 
 \subsection{Regla 2 — Vulnerabilidad Sanitaria (Rama Urbana)}
 
@@ -1046,22 +1051,18 @@ nivel_riesgo_global(Id, Global) :-
     ; Global = bajo ).
 \end{lstlisting}
 
-El nivel global se define por el máximo de las categorías técnicas (criterio conservador: un solo riesgo crítico —por ejemplo, estructural muy alto— basta para clasificar la vivienda en riesgo global muy alto), coherente con el enfoque de gestión de desastres que prioriza el escenario más severo posible.
+El nivel global se define por el máximo de las categorías técnicas (criterio conservador: un solo riesgo crítico por ejemplo, estructural muy alto basta para clasificar la vivienda en riesgo global muy alto), coherente con el enfoque de gestión de desastres que prioriza el escenario más severo posible.
 
 \section{Consultas Prolog}
 
 El proceso completo, desde la respuesta del usuario hasta la recomendación, se ejecuta mediante una secuencia de consultas sobre la base de conocimiento ya poblada.
 
-\diagrambox{proceso_consulta}{Proceso de consulta Prolog}{
-  \begin{tabular}{p{2cm} p{11cm}}
-    1. & Usuario responde el cuestionario \\
-    2. & Generación de hechos \\
-    3. & Base de Hechos Dinámica \\
-    4. & Consultas al sistema \\
-    5. & Resultados de clasificación \\
-    6. & Recomendaciones
-  \end{tabular}
-}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{Recursos/proceso_consulta.png}
+  \caption{Proceso de consulta Prolog}
+  \label{fig:proceso_consulta}
+\end{figure}
 
 \subsection{Paso a Paso}
 
@@ -1143,7 +1144,7 @@ Cada consulta es independiente y reutilizable: el mismo hecho \texttt{material\_
 
 \section{Motor de Recomendaciones}
 
-Las recomendaciones NO están asociadas directamente a cada pregunta. Dependen del resultado de la inferencia. Esto permite que una misma recomendación se dispare por combinaciones distintas de respuestas, y que preguntas aisladas no generen automáticamente una recomendación sin haber pasado por el filtro de la regla de vulnerabilidad correspondiente.
+Las recomendaciones no están asociadas directamente a cada pregunta. Dependen del resultado de la inferencia. Esto permite que una misma recomendación se dispare por combinaciones distintas de respuestas, y que preguntas aisladas no generen automáticamente una recomendación sin haber pasado por el filtro de la regla de vulnerabilidad correspondiente.
 
 \diagrambox{generacion_recomendaciones}{Generación de recomendaciones a partir de inferencias}{
   \begin{tabular}{p{5cm} p{9cm}}
@@ -1235,14 +1236,15 @@ El motor de recomendaciones descrito en la sección anterior genera consejos gen
 
 \begin{table}[H]
 \centering
+\small
 \caption{Recomendaciones estructurales específicas}
 \label{tab:rec_estructurales_esp}
-\begin{tabular}{@{}p{0.35\linewidth}p{0.60\linewidth}@{}}
+\begin{tabular}{@{}>{\RaggedRight}p{0.45\linewidth}>{\RaggedRight}p{0.50\linewidth}@{}}
 \toprule
 \textbf{Condición} & \textbf{Recomendación} \\ \midrule
-\texttt{material\_muro(Id, precario)} y \texttt{techo(Id, plano)} & "Priorizar la instalación de un techo inclinado con calaminas para evitar la acumulación de agua que debilita los muros de adobe." \\
-\texttt{material\_muro(Id, precario)} y \texttt{techo\_protegido(Id, inadecuado)} & "Asegurar correctamente los plásticos con una estructura inclinada y clavada, no solo con peso muerto, para proteger los muros de adobe." \\
-\texttt{material\_muro(Id, noble)} y \texttt{techo(Id, plano)} & "Revisar los sumideros y la membrana impermeable del techo plano para evitar filtraciones que afecten la estructura de concreto." \\ \bottomrule
+\ttfamily material\_muro(Id, precario) y \ttfamily techo(Id, plano) & ``Priorizar la instalación de un techo inclinado con calaminas para evitar la acumulación de agua que debilita los muros de adobe.'' \\ \addlinespace
+\ttfamily material\_muro(Id, precario) y \ttfamily techo\_protegido(Id, inadecuado) & ``Asegurar correctamente los plásticos con una estructura inclinada y clavada, no solo con peso muerto, para proteger los muros de adobe.'' \\ \addlinespace
+\ttfamily material\_muro(Id, noble) y \ttfamily techo(Id, plano) & ``Revisar los sumideros y la membrana impermeable del techo plano para evitar filtraciones que afecten la estructura de concreto.'' \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -1255,8 +1257,8 @@ El motor de recomendaciones descrito en la sección anterior genera consejos gen
 \begin{tabular}{@{}p{0.35\linewidth}p{0.60\linewidth}@{}}
 \toprule
 \textbf{Condición} & \textbf{Recomendación} \\ \midrule
-\texttt{valvula\_check(Id, no)} y \texttt{absorcion\_calle(Id, mala)} & "Instalar una válvula check antirretorno y, además, colocar sacos de arena en la puerta para evitar el ingreso de agua de la calle." \\
-\texttt{valvula\_check(Id, no)} y \texttt{ambiente\_hundido(Id, si)} & "Instalar una válvula check y elevar todos los equipos y muebles del sótano o ambiente hundido." \\ \bottomrule
+\texttt{valvula\_check(Id, no)} y \texttt{absorcion\_calle(Id, mala)} & ``Instalar una válvula check antirretorno y, además, colocar sacos de arena en la puerta para evitar el ingreso de agua de la calle.'' \\
+\texttt{valvula\_check(Id, no)} y \texttt{ambiente\_hundido(Id, si)} & ``Instalar una válvula check y elevar todos los equipos y muebles del sótano o ambiente hundido.'' \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -1269,8 +1271,8 @@ El motor de recomendaciones descrito en la sección anterior genera consejos gen
 \begin{tabular}{@{}p{0.35\linewidth}p{0.60\linewidth}@{}}
 \toprule
 \textbf{Condición} & \textbf{Recomendación} \\ \midrule
-\texttt{criaderos\_vectores(Id, si)} y \texttt{almacenamiento\_agua(Id, precario)} & "Eliminar todos los recipientes que acumulan agua (llantas, botellas, latas) y tapar herméticamente los baldes y bidones de almacenamiento." \\
-\texttt{criaderos\_vectores(Id, si)} y \texttt{techo(Id, plano)} & "Revisar el techo plano, ya que puede acumular agua de lluvia y convertirse en un criadero de mosquitos." \\ \bottomrule
+\texttt{criaderos\_vectores(Id, si)} y \texttt{almacenamiento\_agua(Id, precario)} & ``Eliminar todos los recipientes que acumulan agua (llantas, botellas, latas) y tapar herméticamente los baldes y bidones de almacenamiento.'' \\
+\texttt{criaderos\_vectores(Id, si)} y \texttt{techo(Id, plano)} & ``Revisar el techo plano, ya que puede acumular agua de lluvia y convertirse en un criadero de mosquitos.'' \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -1280,12 +1282,12 @@ El motor de recomendaciones descrito en la sección anterior genera consejos gen
 \centering
 \caption{Recomendaciones de resiliencia específicas}
 \label{tab:rec_resiliencia_esp}
-\begin{tabular}{@{}p{0.35\linewidth}p{0.60\linewidth}@{}}
+\begin{tabular}{@{}p{0.38\linewidth}p{0.57\linewidth}@{}}
 \toprule
 \textbf{Condición} & \textbf{Recomendación} \\ \midrule
-\texttt{poblacion\_vulnerable(Id, si)} y \texttt{red\_apoyo\_vecinal(Id, no)} & "Coordinar con los vecinos para que una persona esté designada para ayudar a los niños, ancianos o personas con discapacidad durante la evacuación." \\
-\texttt{kit\_medico(Id, no)} y \texttt{almacenamiento\_agua(Id, precario)} & "Adquirir un botiquín con suero oral y medicamentos para diarrea, ya que el almacenamiento de agua en baldes aumenta el riesgo de contaminación." \\
-\texttt{alimentos\_elevados(Id, no)} y \texttt{ambiente\_hundido(Id, si)} & "Elevar todos los alimentos no perecederos a repisas altas, ya que el agua de la calle puede ingresar por los ambientes hundidos." \\ \bottomrule
+\texttt{poblacion\_vulnerable(Id, si)} y \texttt{red\_apoyo\_vecinal(Id, no)} & ``Coordinar con los vecinos para que una persona esté designada para ayudar a los niños, ancianos o personas con discapacidad durante la evacuación.'' \\ \addlinespace
+\texttt{kit\_medico(Id, no)} y \texttt{almacenamiento\_agua(Id, precario)} & ``Adquirir un botiquín con suero oral y medicamentos para diarrea, ya que el almacenamiento de agua en baldes aumenta el riesgo de contaminación.'' \\ \addlinespace
+\texttt{alimentos\_elevados(Id, no)} y \texttt{ambiente\_hundido(Id, si)} & ``Elevar todos los alimentos no perecederos a repisas altas, ya que el agua de la calle puede ingresar por los ambientes hundidos.'' \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -1298,9 +1300,9 @@ El motor de recomendaciones descrito en la sección anterior genera consejos gen
 \begin{tabular}{@{}p{0.35\linewidth}p{0.60\linewidth}@{}}
 \toprule
 \textbf{Condición} & \textbf{Recomendación} \\ \midrule
-\texttt{proximidad\_rio(Id, cerca)} y \texttt{suelo\_humedad(Id, retiene)} & "Ante la alerta de lluvias intensas, evacuar hacia el refugio alto identificado y asegurar los animales de corral en zonas elevadas." \\
-\texttt{proximidad\_rio(Id, cerca)} y \texttt{refugio\_alto(Id, no)} & "Identificar de forma urgente un punto alto cercano (cerro, colegio, iglesia) y coordinar con la comunidad un plan de evacuación vertical." \\
-\texttt{dependencia\_agropecuaria(Id, si)} & "Proteger los animales de corral y cultivos, reubicándolos temporalmente en zonas altas o asegurando los corrales ante la crecida del río." \\ \bottomrule
+\texttt{proximidad\_rio(Id, cerca)} y \texttt{suelo\_humedad(Id, retiene)} & ``Ante la alerta de lluvias intensas, evacuar hacia el refugio alto identificado y asegurar los animales de corral en zonas elevadas.'' \\
+\texttt{proximidad\_rio(Id, cerca)} y \texttt{refugio\_alto(Id, no)} & ``Identificar de forma urgente un punto alto cercano (cerro, colegio, iglesia) y coordinar con la comunidad un plan de evacuación vertical.'' \\
+\texttt{dependencia\_agropecuaria  (Id, si)} & ``Proteger los animales de corral y cultivos, reubicándolos temporalmente en zonas altas o asegurando los corrales ante la crecida del río.'' \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -1329,25 +1331,12 @@ La incorporación de estas reglas específicas ofrece las siguientes ventajas:
 
 \section{Flujo Completo del Sistema Experto}
 
-\diagrambox{flujo_completo}{Flujo completo del sistema experto}{
-  \begin{tabular}{p{2cm} p{11cm}}
-    1. & Inicio \\
-    2. & Usuario accede al sistema \\
-    3. & Presentación del cuestionario \\
-    4. & Pregunta 1: Ubicación (urbana/rural) \\
-    5. & Rama Urbana (P7-11) o Rama Rural (P7R-11R) \\
-    6. & Preguntas 12-15 (Salud y Cierre) \\
-    7. & Módulo de Traducción \\
-    8. & Generación de hechos Prolog \\
-    9. & Base de hechos dinámica \\
-    10. & Motor de inferencia \\
-    11. & Clasificación de riesgos (5 dimensiones + Resiliencia) \\
-    12. & Generación de recomendaciones (genéricas + específicas) \\
-    13. & Informe personalizado \\
-    14. & Fin
-  \end{tabular}
-}
-
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{Recursos/flujo_completo.png}
+  \caption{Flujo completo del sistema experto}
+  \label{fig:flujo_completo}
+\end{figure}
 \section{Arquitectura Tecnológica del Sistema}
 
 El sistema experto desarrollado en Prolog no opera de forma aislada, sino que se integra dentro de una arquitectura cliente-servidor moderna que permite su uso por parte de ciudadanos sin conocimientos técnicos. Esta sección describe los componentes tecnológicos que conforman el sistema completo y el flujo de información entre ellos.
@@ -1368,7 +1357,7 @@ El frontend actúa como el único punto de contacto del usuario con el sistema, 
 
 \subsection{Backend (Python)}
 
-El backend, implementado en Python (preferentemente con FastAPI), actúa como el orquestador del sistema. Sus responsabilidades son:
+El backend, implementado en Python (utilizando FastAPI), actúa como el orquestador del sistema. Sus responsabilidades son:
 
 \begin{itemize}
   \item \textbf{Recepción de respuestas}: Recibe las respuestas del cuestionario enviadas desde el frontend mediante una API REST.
@@ -1393,16 +1382,83 @@ El motor de inferencia es el núcleo del sistema experto, implementado en SWI-Pr
 
 \subsection{Comunicación entre Componentes}
 
-\diagrambox{comunicacion_componentes}{Comunicación entre los componentes del sistema}{
-  \begin{tabular}{p{2cm} p{11cm}}
-    \textbf{Usuario} & $\rightarrow$ React (Frontend) \\
-    \textbf{React} & $\rightarrow$ HTTP POST /evaluar $\rightarrow$ API Python (Backend) \\
-    \textbf{Backend} & $\rightarrow$ assert/consultas $\rightarrow$ SWI-Prolog (Motor) \\
-    \textbf{Prolog} & $\rightarrow$ Resultados $\rightarrow$ Backend \\
-    \textbf{Backend} & $\rightarrow$ JSON $\rightarrow$ React \\
-    \textbf{React} & $\rightarrow$ Visualización $\rightarrow$ Usuario
-  \end{tabular}
-}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Recursos/comunicacion_componentes.png}
+  \caption{Comunicación entre los componentes del sistema}
+  \label{fig:comunicacion_componentes}
+\end{figure}
+
+\subsection{Comunicación entre Python y SWI-Prolog}
+
+La comunicación entre el backend en Python y el motor de inferencia SWI-Prolog se realiza mediante la biblioteca \textbf{pyswip}, que actúa como puente entre ambos lenguajes. pyswip utiliza la interfaz de lenguaje foráneo (FLI) de SWI-Prolog para permitir que Python cargue bases de conocimiento, inserte hechos dinámicos y ejecute consultas de inferencia.
+
+\subsubsection{Inicialización del Motor}
+
+El motor Prolog se inicializa creando una instancia de la clase \texttt{Prolog} y cargando la base de conocimiento mediante el método \texttt{consult()}:
+
+\begin{lstlisting}[language=Python, caption={Inicialización del motor Prolog}]
+from pyswip import Prolog
+
+class PrologEngine:
+    def __init__(self, ruta_base_conocimientos: Path) -> None:
+        self._prolog = Prolog()
+        self._ruta_base = ruta_base_conocimientos
+        self._cargar_base()
+
+    def _cargar_base(self) -> None:
+        ruta = str(self._ruta_base.resolve())
+        self._prolog.consult(ruta)
+\end{lstlisting}
+
+El método \texttt{consult()} carga todas las reglas y hechos definidos en el archivo \texttt{conocimientos.pl}, poniéndolos a disposición del motor de inferencia.
+
+\subsubsection{Inserción de Hechos}
+
+Los hechos dinámicos se insertan utilizando el predicado Prolog \texttt{assert} a través del método \texttt{query()}:
+
+\begin{lstlisting}[language=Python, caption={Inserción de hechos Prolog}]
+def assert_hecho(self, vivienda_id: str, functor: str, valor: str) -> None:
+    for _ in self._prolog.query(
+        f"assert({functor}('{vivienda_id}', '{valor}'))"
+    ):
+        pass
+\end{lstlisting}
+
+Cada respuesta del cuestionario se traduce en un hecho Prolog que representa un indicador observable de riesgo.
+
+\subsubsection{Ejecución de Consultas}
+
+Las consultas de inferencia se ejecutan mediante el método \texttt{query()}, que retorna un iterador sobre los resultados unificados:
+
+\begin{lstlisting}[language=Python, caption={Ejecución de consultas Prolog}]
+def consultar_uno(self, consulta: str) -> str | None:
+    resultados = list(self._prolog.query(consulta))
+    if not resultados:
+        return None
+    resultado = resultados[0]
+    variables = {
+        clave: valor
+        for clave, valor in resultado.items()
+        if isinstance(valor, str)
+    }
+    if not variables:
+        return None
+    return next(iter(variables.values()))
+\end{lstlisting}
+
+El motor de inferencia resuelve la consulta aplicando las reglas definidas en la base de conocimiento y retorna las variables unificadas con sus valores.
+
+\subsubsection{Diagrama de Secuencia}
+
+La Figura \ref{fig:secuencia_python_prolog} ilustra el flujo completo de comunicación entre Python y SWI-Prolog durante una evaluación, desde la inicialización hasta la generación de recomendaciones.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Recursos/secuencia_python_prolog.png}
+  \caption{Secuencia de comunicación entre Python y SWI-Prolog}
+  \label{fig:secuencia_python_prolog}
+\end{figure}
 
 \section{Proceso de Integración del Sistema Experto}
 
@@ -1535,16 +1591,12 @@ La separación en componentes independientes proporciona los siguientes benefici
 
 \section{Diagrama de Arquitectura Tecnológica}
 
-\diagrambox{arquitectura_tecnologica}{Diagrama de arquitectura tecnológica del sistema experto}{
-  \begin{tabular}{p{2cm} p{11cm}}
-    \textbf{Cliente} & Usuario $\rightarrow$ React (Frontend) \\
-    \textbf{Servidor} & React $\rightarrow$ HTTP POST /evaluar $\rightarrow$ FastAPI (Backend) \\
-    \textbf{Motor Prolog} & Backend $\rightarrow$ assert/consultas $\rightarrow$ SWI-Prolog (Motor de Inferencia) \\
-    & Prolog $\rightarrow$ Resultados $\rightarrow$ Backend \\
-    & Backend $\rightarrow$ JSON $\rightarrow$ React \\
-    & React $\rightarrow$ Visualización $\rightarrow$ Usuario
-  \end{tabular}
-}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Recursos/diagrama_arquitectura.png}
+  \caption{Diagrama de arquitectura tecnológica del sistema experto}
+  \label{fig:arquitectura_tecnologica}
+\end{figure}
 
 \section{Conclusiones}
 
@@ -1718,167 +1770,310 @@ La separación en componentes independientes proporciona los siguientes benefici
 \end{itemize}
 
 \newpage
-\section{Anexo B: Código Prolog Completo del Sistema Experto (Versión Ampliada)}
+\section{Anexo B: Código Prolog Completo del Sistema Experto}
 
 El siguiente código incluye todas las reglas de inferencia y el motor de recomendaciones completo, con las recomendaciones genéricas y las específicas por combinación de hechos.
 
-\begin{lstlisting}[language=Prolog, caption={Código completo del sistema experto (versión ampliada)}]
+\begin{lstlisting}[language=Prolog, caption={Código completo del sistema experto}]
 :- dynamic zona/2.
 :- dynamic material_muro/2.
 :- dynamic techo/2.
 :- dynamic almacenamiento_agua/2.
 :- dynamic poblacion_vulnerable/2.
 :- dynamic techo_protegido/2.
+
 :- dynamic valvula_check/2.
 :- dynamic altura_electrica/2.
 :- dynamic absorcion_calle/2.
 :- dynamic ambiente_hundido/2.
 :- dynamic respaldo_energia/2.
+
 :- dynamic proximidad_rio/2.
 :- dynamic refugio_alto/2.
 :- dynamic dependencia_agropecuaria/2.
 :- dynamic suelo_humedad/2.
 :- dynamic radio_comunicacion/2.
+
 :- dynamic criaderos_vectores/2.
 :- dynamic kit_medico/2.
 :- dynamic alimentos_elevados/2.
 :- dynamic red_apoyo_vecinal/2.
 
-recomendacion(estructural, 'Reforzar o sustituir los muros de adobe y corregir la pendiente del techo').
-recomendacion(sanitaria, 'Instalar una válvula check antirretorno en la conexión de desagüe').
-recomendacion(electrico, 'Elevar tomacorrientes y llave general a una altura segura').
-recomendacion(hidrologico_urbano, 'Evitar el uso de ambientes hundidos durante alertas de lluvia y gestionar drenaje temporal').
-recomendacion(hidrologico_rural, 'Identificar y ensayar la ruta hacia el refugio alto más cercano ante desborde del río').
-recomendacion(epidemiologico, 'Eliminar criaderos de agua estancada y tapar los reservorios de almacenamiento').
-recomendacion(resiliencia, 'Reforzar el kit médico familiar, las reservas elevadas de alimentos y coordinar con la junta vecinal').
-
-recomendacion(estructural_techo_plano, 'Priorizar la instalación de un techo inclinado con calaminas para evitar la acumulación de agua que debilita los muros de adobe.').
-recomendacion(estructural_proteccion, 'Asegurar correctamente los plásticos con una estructura inclinada y clavada, no solo con peso muerto, para proteger los muros de adobe.').
-recomendacion(estructural_loza_plana, 'Revisar los sumideros y la membrana impermeable del techo plano para evitar filtraciones que afecten la estructura de concreto.').
-
-recomendacion(sanitaria_calle_empozada, 'Instalar una válvula check antirretorno y, además, colocar sacos de arena en la puerta para evitar el ingreso de agua de la calle.').
-recomendacion(sanitaria_sotano, 'Instalar una válvula check y elevar todos los equipos y muebles del sótano o ambiente hundido.').
-
-recomendacion(epidemiologica_criaderos, 'Eliminar todos los recipientes que acumulan agua (llantas, botellas, latas) y tapar herméticamente los baldes y bidones de almacenamiento.').
-recomendacion(epidemiologica_techo_plano, 'Revisar el techo plano, ya que puede acumular agua de lluvia y convertirse en un criadero de mosquitos.').
-
-recomendacion(resiliencia_apoyo, 'Coordinar con los vecinos para que una persona esté designada para ayudar a los niños, ancianos o personas con discapacidad durante la evacuación.').
-recomendacion(resiliencia_kit_agua, 'Adquirir un botiquín con suero oral y medicamentos para diarrea, ya que el almacenamiento de agua en baldes aumenta el riesgo de contaminación.').
-recomendacion(resiliencia_alimentos, 'Elevar todos los alimentos no perecederos a repisas altas, ya que el agua de la calle puede ingresar por los ambientes hundidos.').
-
-recomendacion(hidrologico_rural_evacuar, 'Ante la alerta de lluvias intensas, evacuar hacia el refugio alto identificado y asegurar los animales de corral en zonas elevadas.').
-recomendacion(hidrologico_rural_refugio, 'Identificar de forma urgente un punto alto cercano (cerro, colegio, iglesia) y coordinar con la comunidad un plan de evacuación vertical.').
-
-recomendacion(proteccion_activos, 'Proteger los animales de corral y cultivos, reubicándolos temporalmente en zonas altas o asegurando los corrales ante la crecida del río.').
-
-aplica_recomendacion(Id, R) :-
-    vulnerabilidad_estructural(Id, Nivel),
-    member(Nivel, [alta, muy_alta]),
-    recomendacion(estructural, R).
-
-aplica_recomendacion(Id, R) :-
-    vulnerabilidad_sanitaria(Id, Nivel),
-    member(Nivel, [alta]),
-    recomendacion(sanitaria, R).
-
-aplica_recomendacion(Id, R) :-
-    riesgo_electrico(Id, alto),
-    recomendacion(electrico, R).
-
-aplica_recomendacion(Id, R) :-
-    zona(Id, urbana),
-    riesgo_hidrologico(Id, Nivel),
-    member(Nivel, [alto, muy_alto]),
-    recomendacion(hidrologico_urbano, R).
-
-aplica_recomendacion(Id, R) :-
-    zona(Id, rural),
-    riesgo_hidrologico(Id, Nivel),
-    member(Nivel, [alto, muy_alto]),
-    recomendacion(hidrologico_rural, R).
-
-aplica_recomendacion(Id, R) :-
-    riesgo_epidemiologico(Id, Nivel),
-    member(Nivel, [medio, alto]),
-    recomendacion(epidemiologico, R).
-
-aplica_recomendacion(Id, R) :-
-    capacidad_resiliencia(Id, baja_resiliencia),
-    recomendacion(resiliencia, R).
-
-% ---- Reglas de activación de recomendaciones específicas ----
-% Estructurales
-aplica_recomendacion(Id, R) :-
+vulnerabilidad_estructural(Id, muy_alta) :-
     material_muro(Id, precario),
     techo(Id, plano),
-    recomendacion(estructural_techo_plano, R).
+    techo_protegido(Id, inadecuado), !.
 
-aplica_recomendacion(Id, R) :-
+vulnerabilidad_estructural(Id, alta) :-
     material_muro(Id, precario),
-    techo_protegido(Id, inadecuado),
-    recomendacion(estructural_proteccion, R).
+    ( techo(Id, plano); techo_protegido(Id, inadecuado) ), !.
 
-aplica_recomendacion(Id, R) :-
+vulnerabilidad_estructural(Id, media) :-
+    material_muro(Id, precario), !.
+
+vulnerabilidad_estructural(Id, media) :-
     material_muro(Id, noble),
-    techo(Id, plano),
-    recomendacion(estructural_loza_plana, R).
+    techo(Id, plano), !.
 
-aplica_recomendacion(Id, R) :-
+vulnerabilidad_estructural(Id, baja) :-
+    material_muro(Id, noble),
+    techo(Id, inclinado).
+
+vulnerabilidad_sanitaria(Id, alta) :-
     zona(Id, urbana),
-    valvula_check(Id, no),
+    valvula_check(Id, no), !.
+
+vulnerabilidad_sanitaria(Id, media) :-
+    zona(Id, urbana),
+    valvula_check(Id, si), !.
+
+vulnerabilidad_sanitaria(Id, no_aplica) :-
+    zona(Id, rural).
+
+riesgo_electrico(Id, alto) :-
+    zona(Id, urbana),
+    altura_electrica(Id, baja), !.
+
+riesgo_electrico(Id, bajo) :-
+    zona(Id, urbana),
+    altura_electrica(Id, segura), !.
+
+riesgo_electrico(Id, no_aplica) :-
+    zona(Id, rural).
+
+riesgo_hidrologico(Id, muy_alto) :-
+    zona(Id, urbana),
     absorcion_calle(Id, mala),
-    recomendacion(sanitaria_calle_empozada, R).
+    ambiente_hundido(Id, si), !.
 
-aplica_recomendacion(Id, R) :-
+riesgo_hidrologico(Id, alto) :-
+    zona(Id, urbana),
+    absorcion_calle(Id, mala), !.
+
+riesgo_hidrologico(Id, medio) :-
+    zona(Id, urbana),
+    ambiente_hundido(Id, si), !.
+
+riesgo_hidrologico(Id, bajo) :-
+    zona(Id, urbana),
+    absorcion_calle(Id, buena),
+    ambiente_hundido(Id, no), !.
+
+riesgo_hidrologico(Id, muy_alto) :-
+    zona(Id, rural),
+    proximidad_rio(Id, cerca),
+    suelo_humedad(Id, retiene), !.
+
+riesgo_hidrologico(Id, alto) :-
+    zona(Id, rural),
+    proximidad_rio(Id, cerca), !.
+
+riesgo_hidrologico(Id, medio) :-
+    zona(Id, rural),
+    suelo_humedad(Id, retiene), !.
+
+riesgo_hidrologico(Id, bajo) :-
+    zona(Id, rural),
+    proximidad_rio(Id, lejos),
+    suelo_humedad(Id, drena).
+
+riesgo_epidemiologico(Id, alto) :-
+    criaderos_vectores(Id, si),
+    almacenamiento_agua(Id, precario), !.
+
+riesgo_epidemiologico(Id, medio) :-
+    criaderos_vectores(Id, si), !.
+
+riesgo_epidemiologico(Id, medio) :-
+    almacenamiento_agua(Id, precario), !.
+
+riesgo_epidemiologico(Id, bajo) :-
+    criaderos_vectores(Id, no),
+    almacenamiento_agua(Id, tecnificado).
+
+factor_fragilidad(Id, alta) :-
+    poblacion_vulnerable(Id, si).
+
+factor_fragilidad(Id, baja) :-
+    poblacion_vulnerable(Id, no).
+
+factor_preparacion(Id, Puntaje) :-
+    findall(1, factor_positivo(Id), Positivos),
+    length(Positivos, Puntaje).
+
+factor_positivo(Id) :- kit_medico(Id, si).
+factor_positivo(Id) :- alimentos_elevados(Id, si).
+factor_positivo(Id) :- red_apoyo_vecinal(Id, si).
+factor_positivo(Id) :- zona(Id, urbana), respaldo_energia(Id, si).
+factor_positivo(Id) :- zona(Id, rural), refugio_alto(Id, si).
+factor_positivo(Id) :- zona(Id, rural), radio_comunicacion(Id, si).
+
+capacidad_resiliencia(Id, baja_resiliencia) :-
+    factor_fragilidad(Id, alta),
+    factor_preparacion(Id, Puntaje),
+    Puntaje =< 1, !.
+
+capacidad_resiliencia(Id, media_resiliencia) :-
+    factor_preparacion(Id, Puntaje),
+    Puntaje >= 2,
+    Puntaje =< 3, !.
+
+capacidad_resiliencia(Id, alta_resiliencia) :-
+    factor_preparacion(Id, Puntaje),
+    Puntaje >= 4.
+
+peso_nivel(muy_alto, 4).
+peso_nivel(muy_alta, 4).
+peso_nivel(alto, 3).
+peso_nivel(alta, 3).
+peso_nivel(medio, 2).
+peso_nivel(media, 2).
+peso_nivel(bajo, 1).
+peso_nivel(baja, 1).
+peso_nivel(no_aplica, 0).
+
+nivel_riesgo_global(Id, Global) :-
+    vulnerabilidad_estructural(Id, VE),
+    peso_nivel(VE, PE),
+    vulnerabilidad_sanitaria(Id, VS),
+    peso_nivel(VS, PS),
+    riesgo_electrico(Id, RE),
+    peso_nivel(RE, PRE),
+    riesgo_hidrologico(Id, RH),
+    peso_nivel(RH, PRH),
+    riesgo_epidemiologico(Id, REP),
+    peso_nivel(REP, PREP),
+    Maximo is max(PE, max(PS, max(PRE, max(PRH, PREP)))),
+    ( Maximo =:= 4 -> Global = muy_alto
+    ; Maximo =:= 3 -> Global = alto
+    ; Maximo =:= 2 -> Global = medio
+    ; Global = bajo ).
+
+recomendacion(rec_estructural_generica, 'Reforzar o sustituir los muros de adobe y corregir la pendiente del techo').
+recomendacion(rec_sanitaria_generica, 'Instalar una válvula check antirretorno en la conexión de desagüe').
+recomendacion(rec_electrico_generica, 'Elevar tomacorrientes y llave general a una altura segura').
+recomendacion(rec_hidrologico_urbano_generica, 'Evitar el uso de ambientes hundidos durante alertas de lluvia y gestionar drenaje temporal').
+recomendacion(rec_hidrologico_rural_generica, 'Identificar y ensayar la ruta hacia el refugio alto más cercano ante desborde del río').
+recomendacion(rec_epidemiologico_generica, 'Eliminar criaderos de agua estancada y tapar los reservorios de almacenamiento').
+recomendacion(rec_resiliencia_generica, 'Reforzar el kit médico familiar, las reservas elevadas de alimentos y coordinar con la junta vecinal').
+
+recomendacion(rec_estructural_techo_plano, 'Para el techo de adobe, instalar calaminas inclinadas para evitar acumulación de agua.').
+recomendacion(rec_estructural_proteccion, 'Asegurar correctamente los plásticos con una estructura inclinada y clavada, no solo con peso muerto, para proteger los muros de adobe.').
+recomendacion(rec_estructural_loza_plana, 'Revisar los sumideros y la membrana impermeable del techo plano para evitar filtraciones que afecten la estructura de concreto.').
+
+recomendacion(rec_sanitaria_calle_empozada, 'Colocar sacos de arena en la puerta para evitar el ingreso de agua de la calle.').
+recomendacion(rec_sanitaria_sotano, 'Elevar todos los equipos y muebles del sótano o ambiente hundido.').
+
+recomendacion(rec_epidemiologica_criaderos, 'Revisar especialmente llantas, botellas y latas descubiertas en el patio.').
+recomendacion(rec_epidemiologica_techo_plano, 'Revisar el techo plano, ya que puede acumular agua de lluvia y convertirse en un criadero de mosquitos.').
+
+recomendacion(rec_resiliencia_apoyo, 'Designar a una persona para asistir a niños, ancianos o personas con discapacidad durante la evacuación.').
+
+recomendacion(rec_proteccion_activos, 'Proteger los animales de corral y cultivos, reubicándolos temporalmente en zonas altas o asegurando los corrales ante la crecida del río.').
+
+recomendacion(rec_almacenamiento_agua, 'Mejorar el almacenamiento de agua utilizando recipientes herméticos y elevados para evitar contaminación durante emergencias.').
+recomendacion(rec_respaldo_energia, 'Adquirir linternas recargables o lámparas de emergencia para iluminar durante cortes de energía.').
+recomendacion(rec_radio_comunicacion, 'Adquirir una radio a pilas (transistor) para recibir alertas y comunicados de emergencia cuando falle la telefonía e internet.').
+recomendacion(rec_kit_medico, 'Preparar un botiquín familiar con suero de rehidratación oral y medicamentos para diarrea, ya que las inundaciones aumentan el riesgo de enfermedades gastrointestinales.').
+recomendacion(rec_alimentos_elevados, 'Elevar todos los alimentos no perecederos (arroz, azúcar, fideos, conservas) a repisas o estantes altos para protegerlos de inundaciones y humedad.').
+recomendacion(rec_refugio_alto_rural, 'Identificar de forma urgente un punto alto cercano (cerro, colegio, iglesia) donde refugiarse en caso de inundación, y coordinar con la comunidad un plan de evacuación.').
+recomendacion(rec_suelo_retiene, 'Mejorar el drenaje del terreno (zanjas perimetrales, canales de desvío) para evitar encharcamientos prolongados que debilitan los cimientos y dañan cultivos.').
+
+condicion_recomendacion(Id, rec_estructural_generica) :-
+    vulnerabilidad_estructural(Id, Nivel),
+    member(Nivel, [alta, muy_alta]).
+
+condicion_recomendacion(Id, rec_sanitaria_generica) :-
+    vulnerabilidad_sanitaria(Id, Nivel),
+    member(Nivel, [alta]).
+
+condicion_recomendacion(Id, rec_electrico_generica) :-
+    riesgo_electrico(Id, alto).
+
+condicion_recomendacion(Id, rec_hidrologico_urbano_generica) :-
+    zona(Id, urbana),
+    riesgo_hidrologico(Id, Nivel),
+    member(Nivel, [alto, muy_alto]).
+
+condicion_recomendacion(Id, rec_hidrologico_rural_generica) :-
+    zona(Id, rural),
+    riesgo_hidrologico(Id, Nivel),
+    member(Nivel, [alto, muy_alto]).
+
+condicion_recomendacion(Id, rec_epidemiologico_generica) :-
+    riesgo_epidemiologico(Id, Nivel),
+    member(Nivel, [medio, alto]).
+
+condicion_recomendacion(Id, rec_resiliencia_generica) :-
+    capacidad_resiliencia(Id, baja_resiliencia).
+
+condicion_recomendacion(Id, rec_estructural_techo_plano) :-
+    material_muro(Id, precario),
+    techo(Id, plano).
+
+condicion_recomendacion(Id, rec_estructural_proteccion) :-
+    material_muro(Id, precario),
+    techo_protegido(Id, inadecuado).
+
+condicion_recomendacion(Id, rec_estructural_loza_plana) :-
+    material_muro(Id, noble),
+    techo(Id, plano).
+
+condicion_recomendacion(Id, rec_sanitaria_calle_empozada) :-
     zona(Id, urbana),
     valvula_check(Id, no),
-    ambiente_hundido(Id, si),
-    recomendacion(sanitaria_sotano, R).
+    absorcion_calle(Id, mala).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_sanitaria_sotano) :-
+    zona(Id, urbana),
+    valvula_check(Id, no),
+    ambiente_hundido(Id, si).
+
+condicion_recomendacion(Id, rec_epidemiologica_criaderos) :-
     criaderos_vectores(Id, si),
-    almacenamiento_agua(Id, precario),
-    recomendacion(epidemiologica_criaderos, R).
+    almacenamiento_agua(Id, precario).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_epidemiologica_techo_plano) :-
     criaderos_vectores(Id, si),
-    techo(Id, plano),
-    recomendacion(epidemiologica_techo_plano, R).
+    techo(Id, plano).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_resiliencia_apoyo) :-
     poblacion_vulnerable(Id, si),
-    red_apoyo_vecinal(Id, no),
-    recomendacion(resiliencia_apoyo, R).
+    red_apoyo_vecinal(Id, no).
 
-aplica_recomendacion(Id, R) :-
-    kit_medico(Id, no),
-    almacenamiento_agua(Id, precario),
-    recomendacion(resiliencia_kit_agua, R).
-
-aplica_recomendacion(Id, R) :-
-    alimentos_elevados(Id, no),
-    ambiente_hundido(Id, si),
-    recomendacion(resiliencia_alimentos, R).
-
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_proteccion_activos) :-
     zona(Id, rural),
-    proximidad_rio(Id, cerca),
-    suelo_humedad(Id, retiene),
-    recomendacion(hidrologico_rural_evacuar, R).
+    dependencia_agropecuaria(Id, si).
 
-aplica_recomendacion(Id, R) :-
-    zona(Id, rural),
-    proximidad_rio(Id, cerca),
-    refugio_alto(Id, no),
-    recomendacion(hidrologico_rural_refugio, R).
+condicion_recomendacion(Id, rec_almacenamiento_agua) :-
+    almacenamiento_agua(Id, precario).
 
-aplica_recomendacion(Id, R) :-
+condicion_recomendacion(Id, rec_respaldo_energia) :-
+    zona(Id, urbana),
+    respaldo_energia(Id, no).
+
+condicion_recomendacion(Id, rec_radio_comunicacion) :-
     zona(Id, rural),
-    dependencia_agropecuaria(Id, si),
-    recomendacion(proteccion_activos, R).
+    radio_comunicacion(Id, no).
+
+condicion_recomendacion(Id, rec_kit_medico) :-
+    kit_medico(Id, no).
+
+condicion_recomendacion(Id, rec_alimentos_elevados) :-
+    alimentos_elevados(Id, no).
+
+condicion_recomendacion(Id, rec_refugio_alto_rural) :-
+    zona(Id, rural),
+    refugio_alto(Id, no).
+
+condicion_recomendacion(Id, rec_suelo_retiene) :-
+    zona(Id, rural),
+    suelo_humedad(Id, retiene).
 
 recomendar(Id, Lista) :-
-    findall(R, aplica_recomendacion(Id, R), Lista).
+    findall(Texto,
+            (condicion_recomendacion(Id, RecID), recomendacion(RecID, Texto)),
+            Lista).
 \end{lstlisting}
 
 \end{document}

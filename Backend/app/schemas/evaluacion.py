@@ -92,14 +92,14 @@ class RespuestaCuestionario(BaseModel):
                 "p10_sotano": self.p10_sotano,
                 "p11_energia": self.p11_energia,
             }
-            faltantes = [k for k, v in campos_urbanos.items() if v is None]
+            faltantes = [clave for clave, valor in campos_urbanos.items() if valor is None]
             if faltantes:
                 raise ValueError(
                     f"Zona urbana requiere preguntas 7-11: {', '.join(faltantes)}"
                 )
             if any(
-                getattr(self, f) is not None
-                for f in ["p7r_rio", "p8r_refugio", "p9r_agro", "p10r_suelo", "p11r_radio"]
+                getattr(self, campo) is not None
+                for campo in ["p7r_rio", "p8r_refugio", "p9r_agro", "p10r_suelo", "p11r_radio"]
             ):
                 raise ValueError(
                     "Zona urbana no debe incluir preguntas rurales (p7r-p11r)"
@@ -112,14 +112,14 @@ class RespuestaCuestionario(BaseModel):
                 "p10r_suelo": self.p10r_suelo,
                 "p11r_radio": self.p11r_radio,
             }
-            faltantes = [k for k, v in campos_rurales.items() if v is None]
+            faltantes = [clave for clave, valor in campos_rurales.items() if valor is None]
             if faltantes:
                 raise ValueError(
                     f"Zona rural requiere preguntas 7R-11R: {', '.join(faltantes)}"
                 )
             if any(
-                getattr(self, f) is not None
-                for f in ["p7_valvula", "p8_electrica", "p9_calle", "p10_sotano", "p11_energia"]
+                getattr(self, campo) is not None
+                for campo in ["p7_valvula", "p8_electrica", "p9_calle", "p10_sotano", "p11_energia"]
             ):
                 raise ValueError(
                     "Zona rural no debe incluir preguntas urbanas (p7-p11)"

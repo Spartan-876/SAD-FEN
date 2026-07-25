@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     port: int = 8000
     debug: bool = False
 
-    knowledge_base_path: Path = Path(
+    ruta_base_conocimientos: Path = Path(
         "..", "conocimientos.pl"
     )
 
@@ -20,4 +20,4 @@ class Settings(BaseSettings):
     ]
 
 
-settings = Settings()
+configuracion = Settings()

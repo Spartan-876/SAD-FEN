@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-
 from pyswip import Prolog
 
 logger = logging.getLogger(__name__)
@@ -32,21 +31,21 @@ _HECHOS_POR_VIVIENDA: list[str] = [
 
 
 class PrologEngine:
-    def __init__(self, knowledge_base_path: Path) -> None:
+    def __init__(self, ruta_base_conocimientos: Path) -> None:
         self._prolog = Prolog()
-        self._base_path = knowledge_base_path
+        self._ruta_base = ruta_base_conocimientos
         self._cargar_base()
 
     def _cargar_base(self) -> None:
-        ruta = str(self._base_path.resolve())
+        ruta = str(self._ruta_base.resolve())
         logger.info("Cargando base de conocimiento desde %s", ruta)
         try:
             self._prolog.consult(ruta)
-        except Exception as e:
-            logger.error("Error al cargar la base de conocimiento: %s", e)
+        except Exception as error:
+            logger.error("Error al cargar la base de conocimiento: %s", error)
             raise RuntimeError(
                 f"No se pudo cargar la base de conocimiento: {ruta}"
-            ) from e
+            ) from error
         logger.info("Base de conocimiento cargada correctamente")
 
     def limpiar_hechos(self, vivienda_id: str) -> None:
@@ -68,9 +67,9 @@ class PrologEngine:
             return None
         resultado = resultados[0]
         variables = {
-            k: v
-            for k, v in resultado.items()
-            if isinstance(v, str)
+            clave: valor
+            for clave, valor in resultado.items()
+            if isinstance(valor, str)
         }
         if not variables:
             return None
@@ -78,14 +77,14 @@ class PrologEngine:
 
     def consultar_lista(self, consulta: str) -> list[str]:
         resultados = list(self._prolog.query(consulta))
-        items: list[str] = []
+        elementos: list[str] = []
         for resultado in resultados:
-            for v in resultado.values():
-                if isinstance(v, list):
-                    items.extend(str(item) for item in v)
-                elif isinstance(v, str):
-                    items.append(v)
-        return items
+            for valor in resultado.values():
+                if isinstance(valor, list):
+                    elementos.extend(str(elemento) for elemento in valor)
+                elif isinstance(valor, str):
+                    elementos.append(valor)
+        return elementos
 
     def nivel_riesgo_global(self, vivienda_id: str) -> str | None:
         return self.consultar_uno(
