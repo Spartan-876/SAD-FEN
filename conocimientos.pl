@@ -23,7 +23,6 @@
 :- dynamic alimentos_elevados/2.
 :- dynamic red_apoyo_vecinal/2.
 
-% REGLAS DE INFERENCIA
 % ============================================================
 
 vulnerabilidad_estructural(Id, muy_alta) :-
@@ -149,7 +148,6 @@ capacidad_resiliencia(Id, alta_resiliencia) :-
     factor_preparacion(Id, Puntaje),
     Puntaje >= 4.
 
-% CLASIFICACION DE RIESGO GLOBAL
 % ============================================================
 
 peso_nivel(muy_alto, 4).
@@ -179,7 +177,6 @@ nivel_riesgo_global(Id, Global) :-
     ; Maximo =:= 2 -> Global = medio
     ; Global = bajo ).
 
-% MOTOR DE RECOMENDACIONES
 % ============================================================
 
 recomendacion(rec_estructural_generica, 'Reforzar o sustituir los muros de adobe y corregir la pendiente del techo').
@@ -212,7 +209,6 @@ recomendacion(rec_alimentos_elevados, 'Elevar todos los alimentos no perecederos
 recomendacion(rec_refugio_alto_rural, 'Identificar de forma urgente un punto alto cercano (cerro, colegio, iglesia) donde refugiarse en caso de inundación, y coordinar con la comunidad un plan de evacuación.').
 recomendacion(rec_suelo_retiene, 'Mejorar el drenaje del terreno (zanjas perimetrales, canales de desvío) para evitar encharcamientos prolongados que debilitan los cimientos y dañan cultivos.').
 
-% CONDICIONES QUE ACTIVAN LAS RECOMENDACIONES
 % ============================================================
 
 condicion_recomendacion(Id, rec_estructural_generica) :-
