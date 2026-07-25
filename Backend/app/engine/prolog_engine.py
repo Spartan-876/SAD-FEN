@@ -32,7 +32,6 @@ _HECHOS_POR_VIVIENDA: list[str] = [
 
 
 class PrologEngine:
-    """Implementación del motor de inferencia Prolog usando pyswip."""
     def __init__(self, knowledge_base_path: Path) -> None:
         self._prolog = Prolog()
         self._base_path = knowledge_base_path

@@ -6,10 +6,6 @@ from pydantic import BaseModel, Field, model_validator
 
 
 class RespuestaCuestionario(BaseModel):
-    """Cuestionario de 15 preguntas. Las preguntas 7-11 son condicionales
-    según la zona (urbana/rural). El frontend solo envía las que apliquen."""
-
-    # ---- Bloque troncal (obligatorio para todos) ----
     p1_zona: Literal["A", "B"] = Field(
         ..., description="[A] Urbana, [B] Rural"
     )
@@ -29,7 +25,6 @@ class RespuestaCuestionario(BaseModel):
         ..., description="[A] Adecuado, [B] Inadecuado"
     )
 
-    # ---- Rama urbana (obligatorio si p1_zona="A") ----
     p7_valvula: Literal["A", "B"] | None = Field(
         default=None,
         description="[A] Si tiene válvula check, [B] No tiene",
@@ -51,7 +46,6 @@ class RespuestaCuestionario(BaseModel):
         description="[A] Tiene respaldo, [B] No tiene",
     )
 
-    # ---- Rama rural (obligatorio si p1_zona="B") ----
     p7r_rio: Literal["A", "B"] | None = Field(
         default=None,
         description="[A] Lejos del río, [B] Cerca del río",
@@ -73,7 +67,6 @@ class RespuestaCuestionario(BaseModel):
         description="[A] Tiene radio, [B] No tiene radio",
     )
 
-    # ---- Bloque salud y cierre (obligatorio para todos) ----
     p12_vectores: Literal["A", "B"] = Field(
         ..., description="[A] Sin criaderos, [B] Con criaderos"
     )

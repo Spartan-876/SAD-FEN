@@ -9,7 +9,6 @@ from app.schemas.evaluacion import (
     ResultadoEvaluacion,
 )
 
-# Mapeo: campo del schema → functor Prolog + valor si respuesta A + valor si respuesta B
 MAPEO_HECHOS: dict[str, tuple[str, str, str]] = {
     "p1_zona": ("zona", "urbana", "rural"),
     "p2_muro": ("material_muro", "noble", "precario"),
@@ -67,7 +66,6 @@ class EvaluacionService:
 
     @staticmethod
     def _ordenar_recomendaciones(recomendaciones: list[str]) -> list[str]:
-        """Ordena recomendaciones: genéricas primero, específicas (que empiezan con 'Además') después."""
         genericas = [r for r in recomendaciones if not r.startswith("Además")]
         especificas = [r for r in recomendaciones if r.startswith("Además")]
         return genericas + especificas

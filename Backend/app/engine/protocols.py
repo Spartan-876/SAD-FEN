@@ -5,8 +5,6 @@ from typing import Protocol, runtime_checkable
 
 @runtime_checkable
 class MotorProlog(Protocol):
-    """Contrato que debe cumplir cualquier motor de inferencia Prolog."""
-
     def nivel_riesgo_global(self, vivienda_id: str) -> str | None: ...
 
     def vulnerabilidad_estructural(self, vivienda_id: str) -> str | None: ...

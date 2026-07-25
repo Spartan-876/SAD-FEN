@@ -86,7 +86,7 @@
 % Modificado para incluir logo y texto en todas las páginas
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\includegraphics[width=4cm]{logoUTP.png}}
+\fancyhead[L]{\includegraphics[width=4cm]{Recursos/logoUTP.png}}
 \fancyhead[R]{\small Lenguajes de Programacion - Marzo 2026}
 \renewcommand{\headrule}{\color{red}\hrule width\headwidth height 0.4pt}
 \fancyfoot[C]{\thepage} % Número de página centrado en el pie
@@ -246,18 +246,14 @@ La literatura técnica revisada permite sostener que \parencite{min_vivienda_rne
 
 \section{Arquitectura General del Sistema Experto}
 
-El sistema experto propuesto sigue una arquitectura de cinco capas que se ilustra en la Figura \ref{fig:arquitectura_general}.
+El sistema experto propuesto sigue una arquitectura de cinco capas que se ilustra en la Figura \ref{fig:arquitectura_general}. 
 
-\diagrambox{arquitectura_general}{Arquitectura general del sistema experto}{\label{fig:arquitectura_general}
-  \begin{tabular}{p{3cm} p{10cm}}
-    \textbf{Capa de Entrada} & Usuario $\rightarrow$ Cuestionario de 15 preguntas $\rightarrow$ Respuestas A/B \\
-    \textbf{Capa de Transformación} & Módulo de Traducción $\rightarrow$ Hechos Prolog $\rightarrow$ Base de Hechos Dinámica \\
-    \textbf{Capa de Conocimiento} & Motor de Inferencia + Base de Reglas \\
-    \textbf{Capa de Clasificación} & Vulnerabilidad Estructural, Sanitaria, Riesgo Eléctrico, Hidrológico, Epidemiológico, Resiliencia \\
-    \textbf{Capa de Recomendación} & Recomendaciones personalizadas $\rightarrow$ Informe final \\
-  \end{tabular}
-}
-
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Recursos/arquitectura_general.png}
+  \caption{Arquitectura general del sistema experto}
+  \label{fig:arquitectura_general}
+\end{figure}
 Las capas son:
 
 \begin{enumerate}
@@ -295,37 +291,29 @@ Evalúa la capacidad de respuesta del hogar y la comunidad, considerando poblaci
 \subsection{Estructura de la Base de Conocimiento}
 
 \begin{lstlisting}[language=Prolog, caption={Base de conocimiento dinámica en Prolog}]
-% ============================================================
-% BASE DE CONOCIMIENTO DINÁMICA POR VIVIENDA
-% ============================================================
+:- dynamic zona/2.
+:- dynamic material_muro/2.
+:- dynamic techo/2.
+:- dynamic almacenamiento_agua/2.
+:- dynamic poblacion_vulnerable/2.
+:- dynamic techo_protegido/2.
 
-% Parte 1: Bloque Troncal
-:- dynamic zona/2.                    % P1: urbana/rural
-:- dynamic material_muro/2.           % P2: noble/precario
-:- dynamic techo/2.                   % P3: inclinado/plano
-:- dynamic almacenamiento_agua/2.     % P4: tecnificado/precario
-:- dynamic poblacion_vulnerable/2.    % P5: si/no
-:- dynamic techo_protegido/2.         % P6: adecuado/inadecuado
+:- dynamic valvula_check/2.
+:- dynamic altura_electrica/2.
+:- dynamic absorcion_calle/2.
+:- dynamic ambiente_hundido/2.
+:- dynamic respaldo_energia/2.
 
-% Parte 2: Rama Urbana
-:- dynamic valvula_check/2.           % P7: si/no
-:- dynamic altura_electrica/2.        % P8: segura/baja
-:- dynamic absorcion_calle/2.         % P9: buena/mala
-:- dynamic ambiente_hundido/2.        % P10: no/si
-:- dynamic respaldo_energia/2.        % P11: si/no
+:- dynamic proximidad_rio/2.
+:- dynamic refugio_alto/2.
+:- dynamic dependencia_agropecuaria/2.
+:- dynamic suelo_humedad/2.
+:- dynamic radio_comunicacion/2.
 
-% Parte 3: Rama Rural
-:- dynamic proximidad_rio/2.          % P7_R: lejos/cerca
-:- dynamic refugio_alto/2.            % P8_R: si/no
-:- dynamic dependencia_agropecuaria/2.% P9_R: no/si
-:- dynamic suelo_humedad/2.           % P10_R: drena/retiene
-:- dynamic radio_comunicacion/2.      % P11_R: si/no
-
-% Parte 4: Salud y Cierre
-:- dynamic criaderos_vectores/2.      % P12: no/si
-:- dynamic kit_medico/2.              % P13: si/no
-:- dynamic alimentos_elevados/2.      % P14: si/no
-:- dynamic red_apoyo_vecinal/2.       % P15: si/no
+:- dynamic criaderos_vectores/2.
+:- dynamic kit_medico/2.
+:- dynamic alimentos_elevados/2.
+:- dynamic red_apoyo_vecinal/2.
 \end{lstlisting}
 
 \subsection{Transformación de una Respuesta en un Hecho}
@@ -855,11 +843,6 @@ El motor de inferencia es el propio mecanismo de resolución de Prolog: cada reg
 \textbf{Resultado esperado:} \texttt{muy\_alta | alta | media | baja}
 
 \begin{lstlisting}[language=Prolog, caption={Reglas de vulnerabilidad estructural}]
-% ============================================================
-% REGLA 1: VULNERABILIDAD ESTRUCTURAL
-% Fundamento: NTE E.080 - comportamiento del adobe ante saturación
-% ============================================================
-
 vulnerabilidad_estructural(Id, muy_alta) :-
     material_muro(Id, precario),
     techo(Id, plano),
@@ -890,11 +873,6 @@ vulnerabilidad_estructural(Id, baja) :-
 \textbf{Resultado esperado:} \texttt{alta | media | no\_aplica}
 
 \begin{lstlisting}[language=Prolog, caption={Reglas de vulnerabilidad sanitaria}]
-% ============================================================
-% REGLA 2: VULNERABILIDAD SANITARIA
-% Fundamento: Diseño del alcantarillado EPSSEL, no segregado
-% ============================================================
-
 vulnerabilidad_sanitaria(Id, alta) :-
     zona(Id, urbana),
     valvula_check(Id, no), !.
@@ -916,11 +894,6 @@ Esta regla es un ejemplo explícito de inferencia condicionada por rama: el pred
 \textbf{Resultado esperado:} \texttt{alto | bajo | no\_aplica}
 
 \begin{lstlisting}[language=Prolog, caption={Reglas de riesgo eléctrico}]
-% ============================================================
-% REGLA 3: RIESGO ELÉCTRICO
-% Fundamento: Código Nacional de Electricidad - distancias de seguridad
-% ============================================================
-
 riesgo_electrico(Id, alto) :-
     zona(Id, urbana),
     altura_electrica(Id, baja), !.
@@ -942,11 +915,6 @@ riesgo_electrico(Id, no_aplica) :-
 \textbf{Resultado esperado:} \texttt{muy\_alto | alto | medio | bajo}
 
 \begin{lstlisting}[language=Prolog, caption={Reglas de riesgo hidrológico}]
-% ============================================================
-% REGLA 4a: RIESGO HIDROLÓGICO - RAMA URBANA
-% Fundamento: Inundación pluvial por falta de drenaje
-% ============================================================
-
 riesgo_hidrologico(Id, muy_alto) :-
     zona(Id, urbana),
     absorcion_calle(Id, mala),
@@ -964,11 +932,6 @@ riesgo_hidrologico(Id, bajo) :-
     zona(Id, urbana),
     absorcion_calle(Id, buena),
     ambiente_hundido(Id, no), !.
-
-% ============================================================
-% REGLA 4b: RIESGO HIDROLÓGICO - RAMA RURAL
-% Fundamento: Inundación fluvial por desborde de ríos
-% ============================================================
 
 riesgo_hidrologico(Id, muy_alto) :-
     zona(Id, rural),
@@ -996,11 +959,6 @@ riesgo_hidrologico(Id, bajo) :-
 \textbf{Resultado esperado:} \texttt{alto | medio | bajo}
 
 \begin{lstlisting}[language=Prolog, caption={Reglas de riesgo epidemiológico}]
-% ============================================================
-% REGLA 5: RIESGO EPIDEMIOLÓGICO
-% Fundamento: Alertas MINSA/GERESA sobre dengue y leptospirosis
-% ============================================================
-
 riesgo_epidemiologico(Id, alto) :-
     criaderos_vectores(Id, si),
     almacenamiento_agua(Id, precario), !.
@@ -1023,11 +981,6 @@ Esta categoría integra las variables del cuestionario que el marco EVAR de CENE
 \textbf{Resultado esperado:} \texttt{baja\_resiliencia | media\_resiliencia | alta\_resiliencia}
 
 \begin{lstlisting}[language=Prolog, caption={Reglas de capacidad de resiliencia}]
-% ============================================================
-% REGLA 6: CAPACIDAD DE RESILIENCIA DEL HOGAR
-% Fundamento: Manual EVAR CENEPRED - fragilidad social + resiliencia
-% ============================================================
-
 factor_fragilidad(Id, alta) :-
     poblacion_vulnerable(Id, si).
 
@@ -1065,10 +1018,6 @@ capacidad_resiliencia(Id, alta_resiliencia) :-
 \subsection{Clasificación de Riesgo Global}
 
 \begin{lstlisting}[language=Prolog, caption={Clasificación de riesgo global}]
-% ============================================================
-% CLASIFICACIÓN DE RIESGO GLOBAL
-% ============================================================
-
 peso_nivel(muy_alto, 4).
 peso_nivel(muy_alta, 4).
 peso_nivel(alto, 3).
@@ -1212,11 +1161,6 @@ Las recomendaciones NO están asociadas directamente a cada pregunta. Dependen d
 \subsection{Implementación en Prolog}
 
 \begin{lstlisting}[language=Prolog, caption={Motor de recomendaciones (versión básica)}]
-% ============================================================
-% MOTOR DE RECOMENDACIONES (VERSIÓN BÁSICA)
-% Las recomendaciones dependen del NIVEL DE RIESGO INFERIDO
-% ============================================================
-
 recomendacion(estructural, 'Reforzar o sustituir los muros de adobe y corregir la pendiente del techo').
 recomendacion(sanitaria, 'Instalar una válvula check antirretorno en la conexión de desagüe').
 recomendacion(electrico, 'Elevar tomacorrientes y llave general a una altura segura').
@@ -1779,15 +1723,6 @@ La separación en componentes independientes proporciona los siguientes benefici
 El siguiente código incluye todas las reglas de inferencia y el motor de recomendaciones completo, con las recomendaciones genéricas y las específicas por combinación de hechos.
 
 \begin{lstlisting}[language=Prolog, caption={Código completo del sistema experto (versión ampliada)}]
-% ============================================================
-% SISTEMA EXPERTO PARA EVALUACIÓN DE VULNERABILIDAD
-% ANTE EL FENÓMENO EL NIÑO - LAMBAYEQUE
-% ============================================================
-% Archivo: sistema_experto_lambayeque.pl
-% Versión ampliada con recomendaciones específicas
-% ============================================================
-
-% ---- Base de Conocimiento Dinámica ----
 :- dynamic zona/2.
 :- dynamic material_muro/2.
 :- dynamic techo/2.
@@ -1809,20 +1744,6 @@ El siguiente código incluye todas las reglas de inferencia y el motor de recome
 :- dynamic alimentos_elevados/2.
 :- dynamic red_apoyo_vecinal/2.
 
-% ============================================================
-% REGLAS DE INFERENCIA (sin cambios respecto a la versión anterior)
-% ============================================================
-% (Se omiten por brevedad, están en el cuerpo del documento)
-% ============================================================
-
-% ============================================================
-% MOTOR DE RECOMENDACIONES (VERSIÓN AMPLIADA)
-% ============================================================
-% Las recomendaciones dependen del NIVEL DE RIESGO INFERIDO
-% Y de COMBINACIONES ESPECÍFICAS DE HECHOS.
-% ============================================================
-
-% ---- Hechos de Recomendación Genéricas ----
 recomendacion(estructural, 'Reforzar o sustituir los muros de adobe y corregir la pendiente del techo').
 recomendacion(sanitaria, 'Instalar una válvula check antirretorno en la conexión de desagüe').
 recomendacion(electrico, 'Elevar tomacorrientes y llave general a una altura segura').
@@ -1831,33 +1752,25 @@ recomendacion(hidrologico_rural, 'Identificar y ensayar la ruta hacia el refugio
 recomendacion(epidemiologico, 'Eliminar criaderos de agua estancada y tapar los reservorios de almacenamiento').
 recomendacion(resiliencia, 'Reforzar el kit médico familiar, las reservas elevadas de alimentos y coordinar con la junta vecinal').
 
-% ---- Hechos de Recomendación Específicas ----
-% Estructurales
 recomendacion(estructural_techo_plano, 'Priorizar la instalación de un techo inclinado con calaminas para evitar la acumulación de agua que debilita los muros de adobe.').
 recomendacion(estructural_proteccion, 'Asegurar correctamente los plásticos con una estructura inclinada y clavada, no solo con peso muerto, para proteger los muros de adobe.').
 recomendacion(estructural_loza_plana, 'Revisar los sumideros y la membrana impermeable del techo plano para evitar filtraciones que afecten la estructura de concreto.').
 
-% Sanitarias
 recomendacion(sanitaria_calle_empozada, 'Instalar una válvula check antirretorno y, además, colocar sacos de arena en la puerta para evitar el ingreso de agua de la calle.').
 recomendacion(sanitaria_sotano, 'Instalar una válvula check y elevar todos los equipos y muebles del sótano o ambiente hundido.').
 
-% Epidemiológicas
 recomendacion(epidemiologica_criaderos, 'Eliminar todos los recipientes que acumulan agua (llantas, botellas, latas) y tapar herméticamente los baldes y bidones de almacenamiento.').
 recomendacion(epidemiologica_techo_plano, 'Revisar el techo plano, ya que puede acumular agua de lluvia y convertirse en un criadero de mosquitos.').
 
-% Resiliencia
 recomendacion(resiliencia_apoyo, 'Coordinar con los vecinos para que una persona esté designada para ayudar a los niños, ancianos o personas con discapacidad durante la evacuación.').
 recomendacion(resiliencia_kit_agua, 'Adquirir un botiquín con suero oral y medicamentos para diarrea, ya que el almacenamiento de agua en baldes aumenta el riesgo de contaminación.').
 recomendacion(resiliencia_alimentos, 'Elevar todos los alimentos no perecederos a repisas altas, ya que el agua de la calle puede ingresar por los ambientes hundidos.').
 
-% Hidrológicas rurales
 recomendacion(hidrologico_rural_evacuar, 'Ante la alerta de lluvias intensas, evacuar hacia el refugio alto identificado y asegurar los animales de corral en zonas elevadas.').
 recomendacion(hidrologico_rural_refugio, 'Identificar de forma urgente un punto alto cercano (cerro, colegio, iglesia) y coordinar con la comunidad un plan de evacuación vertical.').
 
-% Protección de activos agropecuarios
 recomendacion(proteccion_activos, 'Proteger los animales de corral y cultivos, reubicándolos temporalmente en zonas altas o asegurando los corrales ante la crecida del río.').
 
-% ---- Reglas de activación de recomendaciones genéricas ----
 aplica_recomendacion(Id, R) :-
     vulnerabilidad_estructural(Id, Nivel),
     member(Nivel, [alta, muy_alta]),
@@ -1910,7 +1823,6 @@ aplica_recomendacion(Id, R) :-
     techo(Id, plano),
     recomendacion(estructural_loza_plana, R).
 
-% Sanitarias
 aplica_recomendacion(Id, R) :-
     zona(Id, urbana),
     valvula_check(Id, no),
@@ -1923,7 +1835,6 @@ aplica_recomendacion(Id, R) :-
     ambiente_hundido(Id, si),
     recomendacion(sanitaria_sotano, R).
 
-% Epidemiológicas
 aplica_recomendacion(Id, R) :-
     criaderos_vectores(Id, si),
     almacenamiento_agua(Id, precario),
@@ -1934,7 +1845,6 @@ aplica_recomendacion(Id, R) :-
     techo(Id, plano),
     recomendacion(epidemiologica_techo_plano, R).
 
-% Resiliencia
 aplica_recomendacion(Id, R) :-
     poblacion_vulnerable(Id, si),
     red_apoyo_vecinal(Id, no),
@@ -1950,7 +1860,6 @@ aplica_recomendacion(Id, R) :-
     ambiente_hundido(Id, si),
     recomendacion(resiliencia_alimentos, R).
 
-% Hidrológicas rurales
 aplica_recomendacion(Id, R) :-
     zona(Id, rural),
     proximidad_rio(Id, cerca),
@@ -1963,21 +1872,13 @@ aplica_recomendacion(Id, R) :-
     refugio_alto(Id, no),
     recomendacion(hidrologico_rural_refugio, R).
 
-% Protección de activos agropecuarios
 aplica_recomendacion(Id, R) :-
     zona(Id, rural),
     dependencia_agropecuaria(Id, si),
     recomendacion(proteccion_activos, R).
 
-% ---- Predicado principal ----
 recomendar(Id, Lista) :-
     findall(R, aplica_recomendacion(Id, R), Lista).
-
-% ============================================================
-% EJEMPLO DE USO
-% ============================================================
-% ?- recomendar(v001, Lista).
-% ============================================================
 \end{lstlisting}
 
 \end{document}

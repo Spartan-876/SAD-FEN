@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 
 
 def _create_evaluacion_service(kb_path: Path) -> EvaluacionService:
-    """Factory: crea el motor Prolog y el servicio de evaluación."""
     engine = PrologEngine(kb_path)
     return EvaluacionService(engine)
 

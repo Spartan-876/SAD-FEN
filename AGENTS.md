@@ -28,8 +28,10 @@ npm run preview    # Preview production build
 ```bash
 cd Backend/app
 pip install -r requeriments.txt    # Instalar dependencias
-uvicorn app.main:app --reload      # Dev server en http://localhost:8000
+uvicorn app.main:app --reload --port 8000  # Dev server en http://localhost:8000
 ```
+
+> **Nota:** El backend se ejecuta en puerto **8001** (el 8000 estaba ocupado). No reiniciar el backend en cada cambio; solo reiniciar si hay errores de importación o cambios en `main.py`.
 
 ### Expert system
 
